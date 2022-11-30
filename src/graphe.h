@@ -14,7 +14,7 @@ class Graphe
     public :
         
         Graphe (unsigned int nombreLignes, unsigned int nombreColonnes);
-        //Graphe (unfichier)
+        Graphe (const * char);
         ~Graphe ();
         float getAltitude (unsigned int numeroLigne, unsigned int numeroColonne) const;
         unsigned int getIndice (unsigned int numeroLigne, unsigned int numeroColonne) const;
