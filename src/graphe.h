@@ -12,16 +12,19 @@ enum Direction { Nord = 0, Est = 1, Sud = 2, Ouest = 3};
 class Graphe
 {
     public :
+
+        //! les numeros de lignes et de colonnes sont entre 0 et nbColonnes|nbLignes - 1
         
         Graphe (unsigned int nombreLignes, unsigned int nombreColonnes);
-        Graphe (const * char);
+        Graphe (const char*);
         ~Graphe ();
-        float getAltitude (unsigned int numeroLigne, unsigned int numeroColonne) const;
+        int getAltitude (unsigned int numeroLigne, unsigned int numeroColonne) const;
+        int getAltitude (unsigned int indice) const;
         unsigned int getIndice (unsigned int numeroLigne, unsigned int numeroColonne) const;
         unsigned int getLigne (unsigned int indice) const;
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe () const;
-        void setAltitude (unsigned int indice, float nouvelleAltitude);
+        void setAltitude (unsigned int indice, int nouvelleAltitude);
         bool voisinExiste (unsigned int indice, Direction uneDirection) const;
         unsigned int getVoisinNord (unsigned int indice) const;
         unsigned int getVoisinSud (unsigned int indice) const;
@@ -29,10 +32,13 @@ class Graphe
         unsigned int getVoisinOuest (unsigned int indice) const;
         unsigned int getNbVoisins (unsigned int indice) const;
 
+        void testRegression() const;
+
     private : 
         unsigned int nbColonnes, nbLignes; 
-        float* tableauAltitude;
-        //fonction lire le fichier
+        int* tableauAltitude;
+        
+        //TODO fonction lire le fichier
 };
 
 
