@@ -22,12 +22,12 @@ class Graphe
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe () const;
         void setAltitude (unsigned int indice, float nouvelleAltitude);
-        bool voisinExiste (unsigned int indice, Direction uneDirection);
-        unsigned int getVoisinNord (unsigned int indice, Direction Nord);
-        unsigned int getVoisinSud (unsigned int indice, Direction Sud);
-        unsigned int getVoisinEst (unsigned int indice, Direction Est);
-        unsigned int getVoisinOuest (unsigned int indice, Direction Ouest);
-        unsigned int getNbVoisins (unsigned int indice);
+        bool voisinExiste (unsigned int indice, Direction uneDirection) const;
+        unsigned int getVoisinNord (unsigned int indice) const;
+        unsigned int getVoisinSud (unsigned int indice) const;
+        unsigned int getVoisinEst (unsigned int indice) const;
+        unsigned int getVoisinOuest (unsigned int indice) const;
+        unsigned int getNbVoisins (unsigned int indice) const;
 
     private : 
         unsigned int nbColonnes, nbLignes; 

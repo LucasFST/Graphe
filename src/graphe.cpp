@@ -118,31 +118,31 @@ bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection)
     }
 }
 
-unsigned int Graphe::getVoisinNord (unsigned int indice, Direction Nord)
+unsigned int Graphe::getVoisinNord (unsigned int indice) const
 {
     assert(voisinExiste(indice, Nord) == true);
     return indice - nbColonnes;
 }
 
-unsigned int Graphe::getVoisinSud (unsigned int indice, Direction Sud)
+unsigned int Graphe::getVoisinSud (unsigned int indice) const
 {
     assert(voisinExiste(indice, Sud) == true);
     return indice + nbColonnes;
 }
 
-unsigned int Graphe::getVoisinEst (unsigned int indice, Direction Est)
+unsigned int Graphe::getVoisinEst (unsigned int indice) const
 {
     assert(voisinExiste(indice, Est) == true);
     return indice + 1;
 }
 
-unsigned int Graphe::getVoisinOuest (unsigned int indice, Direction Ouest)
+unsigned int Graphe::getVoisinOuest (unsigned int indice) const
 {
     assert(voisinExiste(indice, Ouest) == true);
     return indice - 1;
 }
 
- unsigned int Graphe::getNbVoisins (unsigned int indice)
+ unsigned int Graphe::getNbVoisins (unsigned int indice) const
  {
     unsigned int nombreDeVoisins = 0;
     if(voisinExiste(indice,Nord)) nombreDeVoisins++;
