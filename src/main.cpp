@@ -17,7 +17,7 @@ void machin (const bidon& b) {
 void fct(const string& lecture, const string& ecriture) {
     
     ifstream fichier(lecture);
-    //input file stream pour lire 
+    //input file stream pour li
     
     ofstream resultat(ecriture);
     //ooutput file stream pour ecrire
