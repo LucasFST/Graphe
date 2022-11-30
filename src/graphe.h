@@ -3,6 +3,10 @@
 
 //! sommet (i, j)
 //! indice = i x nbColonne + j
+//! nord(i) = i - nbColonne
+//! sud(i) = i + nbColonne
+//! est(i) = i + 1
+//! ouest(i) = i - 1
 class graphe
 {
     public :
@@ -18,6 +22,8 @@ class graphe
         int voisin (indice, numéroDuVoisin)
         int nbVoisin (indice)
         int voisinExiste? (indice, k)
+        int ligne (indice) = i/C (division entière)
+        int colonne (indice) = i%C
     */
 
     private : 
