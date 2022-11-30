@@ -63,5 +63,91 @@ void Graphe::setAltitude(unsigned int indice, float nouvelleAltitude)
     tableauAltitude [indice] = nouvelleAltitude;
 }
 
+bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection)
+{
+    assert (indice < nbColonnes * nbLignes);
+    switch (uneDirection)
+    {
+        case Nord:
+            if(getLigne(indice)==0) // si j'appartiens à la première ligne 
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            break;
+        
+        case Est:
+            if(getColonne(indice)==nbColonnes-1) // si j'appartiens à la dernière colonee (càd la plus à droite)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        
+            break;
 
+        case Sud:
+            if(getLigne(indice)==nbLignes-1) // si j'appartiens à la dernière ligne
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            break;
 
+        case Ouest:
+            if(getColonne(indice)==0) // si j'appartiens à la première colonne (càd la plus à gauche) 
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            break;
+    
+        default:
+            break;
+    }
+}
+
+unsigned int Graphe::getVoisinNord (unsigned int indice, Direction Nord)
+{
+    assert(voisinExiste(indice, Nord) == true);
+    return indice - nbColonnes;
+}
+
+unsigned int Graphe::getVoisinSud (unsigned int indice, Direction Sud)
+{
+    assert(voisinExiste(indice, Sud) == true);
+    return indice + nbColonnes;
+}
+
+unsigned int Graphe::getVoisinEst (unsigned int indice, Direction Est)
+{
+    assert(voisinExiste(indice, Est) == true);
+    return indice + 1;
+}
+
+unsigned int Graphe::getVoisinOuest (unsigned int indice, Direction Ouest)
+{
+    assert(voisinExiste(indice, Ouest) == true);
+    return indice - 1;
+}
+
+ unsigned int Graphe::getNbVoisins (unsigned int indice)
+ {
+    unsigned int nombreDeVoisins = 0;
+    if(voisinExiste(indice,Nord)) nombreDeVoisins++;
+    if(voisinExiste(indice,Sud)) nombreDeVoisins++;
+    if(voisinExiste(indice,Est)) nombreDeVoisins++;
+    if(voisinExiste(indice,Ouest)) nombreDeVoisins++;
+    return nombreDeVoisins;
+ }
