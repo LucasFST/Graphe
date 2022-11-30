@@ -56,3 +56,12 @@ void Graphe::affichageGraphe() const
         cout<<"  "<<tableauAltitude[i]<<"  ";
     }
 }
+
+void Graphe::setAltitude(unsigned int indice, float nouvelleAltitude)
+{
+    assert(indice < nbLignes * nbColonnes);
+    tableauAltitude [indice] = nouvelleAltitude;
+}
+
+
+

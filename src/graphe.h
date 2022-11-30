@@ -18,12 +18,13 @@ class Graphe
         unsigned int getLigne (unsigned int indice) const;
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe() const;
+        void setAltitude(unsigned int indice, float nouvelleAltitude);
+        unsigned int getVoisinNord(unsigned int indice);
+        unsigned int getVoisinSud(unsigned int indice);
+        unsigned int getVoisinNord(unsigned int indice);
+        unsigned int getVoisinNord(unsigned int indice);
 
     /*
-        constructeur (nbLigne, nbColonne, altitude)
-        destructeur
-        int indice (i, j)
-        int altitude (indice)
         int nord(induce) //! attention préconditions : le voisin doit exister
         int sud (indice) //! attention préconditions : le voisin doit exister
         int est (indice) //! attention préconditions : le voisin doit exister
@@ -31,10 +32,6 @@ class Graphe
         int voisin (indice, numéroDuVoisin)
         int nbVoisin (indice)
         int voisinExiste? (indice, k)
-        int ligne (indice) = i/C (division entière)
-        int colonne (indice) = i%C
-        void modifAltitude
-        void affichageGrilleHauteur
     */
 
     private : 
