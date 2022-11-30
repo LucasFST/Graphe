@@ -27,11 +27,11 @@ Graphe::~Graphe()
     }
 }
 
-int Graphe::getAltitude (unsigned int numeroLigne, unsigned int numeroColonne) const
+int Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
 {
-    assert(numeroLigne < nbLignes);
-    assert(numeroColonne < nbColonnes);
-    return tableauAltitude [numeroLigne * nbColonnes + numeroColonne];
+    assert(indiceLigne < nbLignes);
+    assert(indiceColonne < nbColonnes);
+    return tableauAltitude [indiceLigne * nbColonnes + indiceColonne];
 }
 
 int Graphe::getAltitude (unsigned int indice) const
@@ -40,11 +40,11 @@ int Graphe::getAltitude (unsigned int indice) const
     return tableauAltitude [indice];
 }
 
-unsigned int Graphe::getIndice (unsigned int numeroLigne, unsigned int numeroColonne) const
+unsigned int Graphe::getIndice (unsigned int indiceLigne, unsigned int indiceColonne) const
 {
-    assert(numeroLigne < nbLignes);
-    assert(numeroColonne < nbColonnes);
-    return (numeroLigne * nbColonnes + numeroColonne);
+    assert(indiceLigne < nbLignes);
+    assert(indiceColonne < nbColonnes);
+    return (indiceLigne * nbColonnes + indiceColonne);
 }
 
 unsigned int Graphe::getLigne (unsigned int indice) const

@@ -13,14 +13,14 @@ class Graphe
 {
     public :
 
-        //! les numeros de lignes et de colonnes sont entre 0 et nbColonnes|nbLignes - 1
+        //! les indices de lignes et de colonnes sont entre 0 et nbColonnes|nbLignes - 1
         
         Graphe (unsigned int nombreLignes, unsigned int nombreColonnes);
         Graphe (const char*);
         ~Graphe ();
-        int getAltitude (unsigned int numeroLigne, unsigned int numeroColonne) const;
+        int getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const;
         int getAltitude (unsigned int indice) const;
-        unsigned int getIndice (unsigned int numeroLigne, unsigned int numeroColonne) const;
+        unsigned int getIndice (unsigned int indiceLigne, unsigned int indiceColonne) const;
         unsigned int getLigne (unsigned int indice) const;
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe () const;
