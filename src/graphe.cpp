@@ -151,3 +151,7 @@ unsigned int Graphe::getVoisinOuest (unsigned int indice) const
     if(voisinExiste(indice,Ouest)) nombreDeVoisins++;
     return nombreDeVoisins;
  }
+
+ void Graphe::file(const char * file) {
+    
+} 

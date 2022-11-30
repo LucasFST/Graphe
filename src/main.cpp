@@ -5,36 +5,36 @@
 
 using namespace std;
 
-struct bidon {
-    bidon(int a) : i(a) {}
-    int i;
-};
+// struct bidon {
+//     bidon(int a) : i(a) {}
+//     int i;
+// };
 
-void machin (const bidon& b) {
-    cout<<b.i<<endl;
-}
+// void machin (const bidon& b) {
+//     cout<<b.i<<endl;
+// }
 
-void fct(const string& lecture, const string& ecriture) {
+// void fct(const string& lecture, const string& ecriture) {
     
-    ifstream fichier(lecture);
-    //input file stream pour li
+//     ifstream fichier(lecture);
+//     //input file stream pour lire
     
-    ofstream resultat(ecriture);
-    //ooutput file stream pour ecrire
+//     ofstream resultat(ecriture);
+//     //ooutput file stream pour ecrire
 
-    cout<<"truc"<<endl;
+//     cout<<"truc"<<endl;
 
-    int L, C;
-    fichier >> L >> C;
-    resultat<<"le graphe a "<< L << " lignes et "<< C <<" colonnes"<<endl;
+//     int L, C;
+//     fichier >> L >> C;
+//     resultat<<"le graphe a "<< L << " lignes et "<< C <<" colonnes"<<endl;
 
-}
+// }
 
 int main() {
 
-    machin (100);
+    //machin (100);
 
-    fct("test.txt","resultat.txt");
+    //fct("test.txt","resultat.txt");
     // int i,j;
     // string s;
 
