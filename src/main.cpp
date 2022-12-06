@@ -20,7 +20,7 @@ using namespace std;
 //     //input file stream pour lire
     
 //     ofstream resultat(ecriture);
-//     //ooutput file stream pour ecrire
+//     //output file stream pour ecrire
 
 //     cout<<"truc"<<endl;
 
@@ -34,7 +34,7 @@ int main() {
 
     //machin (100);
 
-    //fct("test.txt","resultat.txt");
+    // fct("test.txt","resultat.txt");
     // int i,j;
     // string s;
 
@@ -47,8 +47,9 @@ int main() {
     // (x,y,h1) (a,b,h2)
     // distance : sqrt (a-x)² + (b-y)² + (h1-h2)²
 
-    Graphe unGraphe(0,0);
-    unGraphe.testRegression();
+    Graphe unGraphe(4,4);
+    unGraphe.file("test.txt");
+    // unGraphe.testRegression();
 
     return 0;
 }

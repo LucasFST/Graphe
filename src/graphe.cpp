@@ -1,6 +1,8 @@
 #include "graphe.h"
 #include <iostream>
+#include <fstream>
 #include <cassert>
+#include <string>
 
 using namespace std;
 
@@ -162,10 +164,24 @@ unsigned int Graphe::getNbVoisins (unsigned int indice) const
 }
 
 //TODO 
-//void Graphe::file(const char * file) 
-// {
-    
-// } 
+void Graphe::file(const char * file) 
+{
+    //Graphe g(4,4); 
+    ofstream fichier(file, ios::out | ios::trunc);
+    if(fichier) {
+        int Largeur = 4, Hauteur = 4;
+        fichier << Largeur << " " << Hauteur << endl;
+        for (int i = 0; i < 16; i++) {
+                fichier << tableauAltitude[i] << " ";
+                if (i%4 == 0) fichier << endl;
+                // la première ligne est coupée et jsp pourquoi
+        }
+        fichier.close();
+    }
+    else {
+        cout << "Impossible d'ouvrir le fichier !" << endl;
+    }
+}
 
 
 void Graphe::testRegression() const
