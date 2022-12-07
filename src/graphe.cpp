@@ -3,6 +3,8 @@
 #include <fstream>
 #include <cassert>
 #include <string>
+#include <queue>
+#include <limits>
 
 using namespace std;
 
@@ -209,6 +211,37 @@ void Graphe::sauvergarderGraphe (const char * nomFichier) const
     else 
     {
         cout << "Impossible de sauvegarder le graphe !" << endl;
+    }
+}
+
+void Graphe::dijkstra(const Graphe &g, unsigned int depart, unsigned int * precedent, double * distances) 
+{
+    unsigned int n;
+    for(n = 0; n < g.nbColonnes*g.nbLignes ; n++) 
+    {
+        precedent[n] = n;
+        distances[n] = numeric_limits<unsigned int>::infinity();
+    }
+    precedent[n] = n;
+    distances[n] = 0;
+    std::priority_queue<PriorityQueue> F; 
+    F.push(depart,distances[depart]);
+    while(! F.empty())
+    {
+        // n = noeud de F distance mini(sommet de file de priorité)
+        F.pop(n); // retirer n de F
+        for(unsigned int v=0;v<n;v++)
+        {
+            int dv = distances[v];
+            int dn = distances[n];
+            int dnv = dn;
+            if((precedent[v] = v) || (dnv<dv))
+            {
+                distances[v] = dnv;
+                precedent[v] = n;
+                F.push(v,dnv);
+            }
+        }
     }
 }
 

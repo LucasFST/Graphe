@@ -38,8 +38,20 @@ class Graphe
         void chargerGraphe (const char * nomFichier);
         void sauvergarderGraphe (const char * nomFichier) const;
 
+        void dijkstra(const Graphe &g, unsigned int depart, unsigned int * precedent, double * distances);
+
     private : 
 
+        struct PriorityQueue 
+        {
+            int sommet;
+            double distance;
+            bool operator < (const PriorityQueue &pq) 
+            {
+                return distance < pq.distance;
+            }
+        };
+        
         unsigned int nbColonnes, nbLignes; 
         int* tableauAltitude;
         
