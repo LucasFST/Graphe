@@ -226,11 +226,11 @@ void Graphe::dijkstra(const Graphe &g, unsigned int depart, unsigned int * prece
     precedent[n] = n;
     distances[n] = 0;
     std::priority_queue<PriorityQueue> F; 
-    F.push(depart,distances[depart]);
+    F.push({depart,distances[depart]});
     while(! F.empty())
     {
-        // n = noeud de F distance mini(sommet de file de priorité)
-        F.pop(n); // retirer n de F
+        //! n = noeud de F distance mini(sommet de file de priorité)
+        F.pop({n,distances[n]}); // retirer n de F
         for(unsigned int v=0;v<n;v++)
         {
             int dv = distances[v];
@@ -321,4 +321,3 @@ double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
             return -1;
             break;
     }
-}

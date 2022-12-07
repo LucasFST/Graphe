@@ -45,7 +45,7 @@ class Graphe
 
         struct PriorityQueue 
         {
-            int sommet;
+            unsigned int sommet;
             double distance;
             bool operator < (const PriorityQueue &pq) 
             {
