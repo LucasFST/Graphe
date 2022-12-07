@@ -34,10 +34,12 @@ class Graphe
 
         void testRegression() const;
 
-        //TODO fonction lire le fichier
-        void chargerGraphe(const char * file);
+        
+        void chargerGraphe (const char * nomFichier);
+        void sauvergarderGraphe (const char * nomFichier) const;
 
     private : 
+
         unsigned int nbColonnes, nbLignes; 
         int* tableauAltitude;
         

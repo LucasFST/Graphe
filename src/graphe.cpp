@@ -168,7 +168,6 @@ unsigned int Graphe::getNbVoisins (unsigned int indice) const
     return nombreDeVoisins;
 }
 
-//TODO 
 void Graphe::chargerGraphe(const char * file) 
 { 
     ifstream fichier(file);
@@ -191,20 +190,27 @@ void Graphe::chargerGraphe(const char * file)
     }
 }
 
-// ofstream fichier(file, ios::out | ios::trunc);
-    // if(fichier) {
-    //     int Largeur = 4, Hauteur = 4;
-    //     fichier << Largeur << " " << Hauteur << endl;
-    //     for (int i = 0; i < 16; i++) {
-    //         if (i%4 == 0) fichier << endl;
-    //             fichier << tableauAltitude[i] << " ";
-    //             // la première ligne est coupée et jsp pourquoi
-    //     }
-    //     fichier.close();
-    // }
-    // else {
-    //     cout << "Impossible d'ouvrir le fichier !" << endl;
-    // }
+void Graphe::sauvergarderGraphe (const char * nomFichier) const
+{
+    ofstream fichier(nomFichier);
+    if(fichier.is_open()) 
+    {
+        fichier << nbColonnes << " " << nbLignes << endl;
+        for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
+        {
+            if (i % nbColonnes == 0) 
+            {
+                fichier << endl;
+            }
+            fichier << tableauAltitude[i] << " ";
+        }
+        fichier.close();
+    }
+    else 
+    {
+        cout << "Impossible de sauvegarder le graphe !" << endl;
+    }
+}
 
 
 void Graphe::testRegression() const
@@ -234,3 +240,4 @@ void Graphe::testRegression() const
 }
 
 //! on doit utiliser une file a priorité pour Dijkstra
+//! on a besoin d'un tableau de précédent et un tableau de distances

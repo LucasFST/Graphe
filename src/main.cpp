@@ -49,6 +49,7 @@ int main() {
 
     Graphe unGraphe("./test.txt");
     unGraphe.affichageGraphe();
+    unGraphe.sauvergarderGraphe("./testSauvegarde.txt");
     // unGraphe.testRegression();
 
     return 0;
