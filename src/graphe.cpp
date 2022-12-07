@@ -172,8 +172,8 @@ void Graphe::file(const char * file)
         int Largeur = 4, Hauteur = 4;
         fichier << Largeur << " " << Hauteur << endl;
         for (int i = 0; i < 16; i++) {
+            if (i%4 == 0) fichier << endl;
                 fichier << tableauAltitude[i] << " ";
-                if (i%4 == 0) fichier << endl;
                 // la première ligne est coupée et jsp pourquoi
         }
         fichier.close();
