@@ -18,19 +18,20 @@ class Graphe
         Graphe (unsigned int nombreLignes, unsigned int nombreColonnes);
         Graphe (const char*);
         ~Graphe ();
-        int getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const;
-        int getAltitude (unsigned int indice) const;
+        float getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const;
+        float getAltitude (unsigned int indice) const;
         unsigned int getIndice (unsigned int indiceLigne, unsigned int indiceColonne) const;
         unsigned int getLigne (unsigned int indice) const;
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe () const;
-        void setAltitude (unsigned int indice, int nouvelleAltitude);
+        void setAltitude (unsigned int indice, float nouvelleAltitude);
         bool voisinExiste (unsigned int indice, Direction uneDirection) const;
         unsigned int getVoisinNord (unsigned int indice) const;
         unsigned int getVoisinSud (unsigned int indice) const;
         unsigned int getVoisinEst (unsigned int indice) const;
         unsigned int getVoisinOuest (unsigned int indice) const;
         unsigned int getNbVoisins (unsigned int indice) const;
+        double getDistance(unsigned int indice, Direction uneDirection) const;
 
         void testRegression() const;
 
@@ -53,7 +54,7 @@ class Graphe
         };
         
         unsigned int nbColonnes, nbLignes; 
-        int* tableauAltitude;
+        float* tableauAltitude;
         
         
 };

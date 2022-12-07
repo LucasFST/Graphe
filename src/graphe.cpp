@@ -1,6 +1,7 @@
 #include "graphe.h"
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <cassert>
 #include <string>
 #include <queue>
@@ -12,7 +13,7 @@ Graphe::Graphe(unsigned int nombreLignes, unsigned int nombreColonnes)
 {
     nbLignes = nombreLignes;
     nbColonnes = nombreColonnes;
-    tableauAltitude = new int [nbLignes * nbColonnes];
+    tableauAltitude = new float [nbLignes * nbColonnes];
     //par défaut au début les altitudes de toutes les cases sont initialisées à 0
     for(unsigned int i = 0 ; i < nbLignes * nbColonnes ; i++)
     {
@@ -36,14 +37,14 @@ Graphe::~Graphe()
     }
 }
 
-int Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
+float Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
 {
     assert(indiceLigne < nbLignes);
     assert(indiceColonne < nbColonnes);
     return tableauAltitude [indiceLigne * nbColonnes + indiceColonne];
 }
 
-int Graphe::getAltitude (unsigned int indice) const
+float Graphe::getAltitude (unsigned int indice) const
 {
     assert(indice < nbColonnes * nbLignes);
     return tableauAltitude [indice];
@@ -78,7 +79,7 @@ void Graphe::affichageGraphe() const
     cout<<endl;
 }
 
-void Graphe::setAltitude(unsigned int indice, int nouvelleAltitude)
+void Graphe::setAltitude(unsigned int indice, float nouvelleAltitude)
 {
     assert(indice < nbLignes * nbColonnes);
     tableauAltitude [indice] = nouvelleAltitude;
@@ -178,7 +179,7 @@ void Graphe::chargerGraphe(const char * file)
         while(!fichier.eof())
         {
             fichier >> nbColonnes >> nbLignes;
-            tableauAltitude = new int [nbLignes * nbColonnes];
+            tableauAltitude = new float [nbLignes * nbColonnes];
             for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
             {
                 fichier >> tableauAltitude[i] ;
@@ -274,3 +275,50 @@ void Graphe::testRegression() const
 
 //! on doit utiliser une file a priorité pour Dijkstra
 //! on a besoin d'un tableau de précédent et un tableau de distances
+
+
+double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
+{
+    switch(uneDirection)
+    {
+        case Sud:
+            if(voisinExiste(indice, uneDirection))
+            {
+                unsigned int voisin = getVoisinSud(indice);
+                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
+                return ( sqrt (1 + diffAltitude * diffAltitude ));
+            }
+            return -1;
+            break;
+        
+        case Nord:
+            if(voisinExiste(indice, uneDirection))
+            {
+                unsigned int voisin = getVoisinNord(indice);
+                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
+                return ( sqrt (1 + diffAltitude * diffAltitude ));
+            }
+            return -1;
+            break;
+        
+        case Est:
+            if(voisinExiste(indice, uneDirection))
+            {
+                unsigned int voisin = getVoisinEst(indice);
+                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
+                return ( sqrt (1 + diffAltitude * diffAltitude ));
+            }
+            return -1;
+            break;
+
+        case Ouest:
+            if(voisinExiste(indice, uneDirection))
+            {
+                unsigned int voisin = getVoisinOuest(indice);
+                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
+                return ( sqrt (1 + diffAltitude * diffAltitude ));
+            }
+            return -1;
+            break;
+    }
+}
