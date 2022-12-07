@@ -4,7 +4,7 @@
 //! sommet (i, j)
 //! indice = i x nbColonne + j
 //! nord(i) = i - nbColonne
-//! sud(i) = i + nbColonne
+//! sud(i) = i + nbCcolonne
 //! est(i) = i + 1
 //! ouest(i) = i - 1
 
@@ -31,7 +31,10 @@ class Graphe
         unsigned int getVoisinEst (unsigned int indice) const;
         unsigned int getVoisinOuest (unsigned int indice) const;
         unsigned int getNbVoisins (unsigned int indice) const;
+        unsigned getVoisin (unsigned int indice, Direction uneDirection) const;
         double getDistance(unsigned int indice, Direction uneDirection) const;
+        unsigned int getNbColonnes() const;
+        unsigned int getNbLignes() const;
 
         void testRegression() const;
 
@@ -39,17 +42,18 @@ class Graphe
         void chargerGraphe (const char * nomFichier);
         void sauvergarderGraphe (const char * nomFichier) const;
 
-        void dijkstra(const Graphe &g, unsigned int depart, unsigned int * precedent, double * distances);
+        void dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances);
 
     private : 
 
         struct PriorityQueue 
         {
-            unsigned int sommet;
+            unsigned int indice;
             double distance;
-            bool operator < (const PriorityQueue &pq) 
+
+            bool operator < (const PriorityQueue &pq) const
             {
-                return distance < pq.distance;
+                return (distance < pq.distance);
             }
         };
         

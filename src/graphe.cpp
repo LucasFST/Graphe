@@ -30,7 +30,7 @@ Graphe::~Graphe()
 {
     if(tableauAltitude != NULL)
     {
-        delete tableauAltitude;
+        delete [] tableauAltitude;
         tableauAltitude = NULL;
         nbLignes = 0;
         nbColonnes = 0;
@@ -171,6 +171,40 @@ unsigned int Graphe::getNbVoisins (unsigned int indice) const
     return nombreDeVoisins;
 }
 
+unsigned int Graphe::getVoisin (unsigned int indice, Direction uneDirection) const
+{
+    switch (uneDirection)
+    {
+        case Nord :
+            if(voisinExiste(indice, Nord))
+            {
+                return getVoisinNord(indice);
+            }
+            break;
+        
+        case Est :
+            if(voisinExiste(indice, Est))
+            {
+                return getVoisinEst(indice);
+            }
+            break;
+
+        case Sud :
+            if(voisinExiste(indice, Sud))
+            {
+                return getVoisinSud(indice);
+            }
+            break;
+
+        case Ouest :
+            if(voisinExiste(indice, Ouest))
+            {
+                return getVoisinOuest(indice);
+            }
+            break;
+    }
+}
+
 void Graphe::chargerGraphe(const char * file) 
 { 
     ifstream fichier(file);
@@ -215,32 +249,55 @@ void Graphe::sauvergarderGraphe (const char * nomFichier) const
     }
 }
 
-void Graphe::dijkstra(const Graphe &g, unsigned int depart, unsigned int * precedent, double * distances) 
+unsigned int Graphe::getNbColonnes() const
 {
-    unsigned int n;
-    for(n = 0; n < g.nbColonnes*g.nbLignes ; n++) 
+    return nbColonnes;
+}
+
+unsigned int Graphe::getNbLignes() const
+{
+    return nbLignes;
+}
+
+void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) 
+{
+    for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
-        precedent[n] = n;
-        distances[n] = numeric_limits<unsigned int>::infinity();
+        tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
+        tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport au noeud de départ à +infini
     }
-    precedent[n] = n;
-    distances[n] = 0;
-    std::priority_queue<PriorityQueue> F; 
-    F.push({depart,distances[depart]});
-    while(! F.empty())
+
+    //TODO Pour chaque librairie
+
+    tabDistances[indiceDepart] = 0; //le noeud de départ est à une distance nulle de lui même
+    std::priority_queue<PriorityQueue> FilePrio; 
+    FilePrio.push({indiceDepart,tabDistances[indiceDepart]}); //le premier élément de la FilePrio est le noeud de départ
+    
+    //TODO fin boucle librairie
+
+    while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale du noeud de départ
     {
-        //! n = noeud de F distance mini(sommet de file de priorité)
-        F.pop({n,distances[n]}); // retirer n de F
-        for(unsigned int v=0;v<n;v++)
+        PriorityQueue noeud = FilePrio.top();   //on récupère le noeud avec la distance au noeud de départ la plus petite
+        FilePrio.pop(); // on le retire de FilePrio car il a déjà la distance minimale
+        for(unsigned int i = 0; i < 4; i++) //on boucle pour accéder à ses éventuels voisins
         {
-            int dv = distances[v];
-            int dn = distances[n];
-            int dnv = dn;
-            if((precedent[v] = v) || (dnv<dv))
+            if(voisinExiste(noeud.indice, static_cast<Direction>(i)))
             {
-                distances[v] = dnv;
-                precedent[v] = n;
-                F.push(v,dnv);
+                unsigned int indiceVoisin = getVoisin(noeud.indice, static_cast<Direction>(i));
+                if(indiceVoisin != indiceDepart)    //si indiceVoisin == indiceDepart on s'en moque car la distance est déjà minimale
+                {
+                    double distanceDepartVoisin = tabDistances[indiceVoisin];
+                    double distanceDepartNoeud = tabDistances [noeud.indice];
+                    double distanceDepartNoeudVoisin = distanceDepartNoeud + getDistance(noeud.indice, static_cast<Direction>(i)); 
+                    if((tabPrecedent[indiceVoisin] == indiceVoisin) || (distanceDepartNoeudVoisin < distanceDepartVoisin))
+                    {
+                        //si le noeud d'indice indiceVoisin n'avait pas encore été découvert ou 
+                        //si distanceDepartNoeudVoisin < distanceDepartVoisin on MAJ les données du noeud d'indice indiceVoisin
+                        tabPrecedent[indiceVoisin] = noeud.indice;
+                        tabDistances[indiceVoisin] = distanceDepartNoeudVoisin;
+                        FilePrio.push({indiceVoisin,tabDistances[indiceVoisin]}); //on ajoute à FilePrio le noeud d'indice indiceVoisin
+                    }
+                }
             }
         }
     }
@@ -272,9 +329,6 @@ void Graphe::testRegression() const
     cout<<endl<<"tests passés avec succès"<<endl<<endl;
 
 }
-
-//! on doit utiliser une file a priorité pour Dijkstra
-//! on a besoin d'un tableau de précédent et un tableau de distances
 
 
 double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
@@ -321,3 +375,4 @@ double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
             return -1;
             break;
     }
+}
