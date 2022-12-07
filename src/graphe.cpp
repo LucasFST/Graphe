@@ -18,6 +18,11 @@ Graphe::Graphe(unsigned int nombreLignes, unsigned int nombreColonnes)
     }
 }
 
+Graphe::Graphe(const char * nomFichier)
+{
+    chargerGraphe(nomFichier);
+}
+
 Graphe::~Graphe()
 {
     if(tableauAltitude != NULL)
@@ -164,24 +169,42 @@ unsigned int Graphe::getNbVoisins (unsigned int indice) const
 }
 
 //TODO 
-void Graphe::file(const char * file) 
-{
-    //Graphe g(4,4); 
-    ofstream fichier(file, ios::out | ios::trunc);
-    if(fichier) {
-        int Largeur = 4, Hauteur = 4;
-        fichier << Largeur << " " << Hauteur << endl;
-        for (int i = 0; i < 16; i++) {
-            if (i%4 == 0) fichier << endl;
-                fichier << tableauAltitude[i] << " ";
-                // la première ligne est coupée et jsp pourquoi
+void Graphe::chargerGraphe(const char * file) 
+{ 
+    ifstream fichier(file);
+    if(fichier.is_open())
+    {
+        while(!fichier.eof())
+        {
+            fichier >> nbColonnes >> nbLignes;
+            tableauAltitude = new int [nbLignes * nbColonnes];
+            for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
+            {
+                fichier >> tableauAltitude[i] ;
+            }
         }
         fichier.close();
     }
-    else {
-        cout << "Impossible d'ouvrir le fichier !" << endl;
+    else
+    {
+        cout<<"Impossible d'ouvrir le fichier ! "<<endl;
     }
 }
+
+// ofstream fichier(file, ios::out | ios::trunc);
+    // if(fichier) {
+    //     int Largeur = 4, Hauteur = 4;
+    //     fichier << Largeur << " " << Hauteur << endl;
+    //     for (int i = 0; i < 16; i++) {
+    //         if (i%4 == 0) fichier << endl;
+    //             fichier << tableauAltitude[i] << " ";
+    //             // la première ligne est coupée et jsp pourquoi
+    //     }
+    //     fichier.close();
+    // }
+    // else {
+    //     cout << "Impossible d'ouvrir le fichier !" << endl;
+    // }
 
 
 void Graphe::testRegression() const

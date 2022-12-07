@@ -47,8 +47,8 @@ int main() {
     // (x,y,h1) (a,b,h2)
     // distance : sqrt (a-x)² + (b-y)² + (h1-h2)²
 
-    Graphe unGraphe(4,4);
-    unGraphe.file("test.txt");
+    Graphe unGraphe("./test.txt");
+    unGraphe.affichageGraphe();
     // unGraphe.testRegression();
 
     return 0;

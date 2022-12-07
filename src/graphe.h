@@ -35,7 +35,7 @@ class Graphe
         void testRegression() const;
 
         //TODO fonction lire le fichier
-        void file(const char * file);
+        void chargerGraphe(const char * file);
 
     private : 
         unsigned int nbColonnes, nbLignes; 
