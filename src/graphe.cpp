@@ -317,22 +317,16 @@ unsigned int Graphe::getNbLignes() const
     return nbLignes;
 }
 
-void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) 
+void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) const
 {
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
         tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport au noeud de départ à +infini
     }
-
-    //TODO Pour chaque librairie
-
     tabDistances[indiceDepart] = 0; //le noeud de départ est à une distance nulle de lui même
     std::priority_queue<PriorityQueue> FilePrio; 
     FilePrio.push({indiceDepart,tabDistances[indiceDepart]}); //le premier élément de la FilePrio est le noeud de départ
-    
-    //TODO fin boucle librairie
-
     while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale du noeud de départ
     {
         PriorityQueue noeud = FilePrio.top();   //on récupère le noeud avec la distance au noeud de départ la plus petite
@@ -436,7 +430,7 @@ double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
     }
 }
 
-void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) 
+void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
 {
     std::priority_queue<PriorityQueue> FilePrio; 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
@@ -478,5 +472,31 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances)
                 }
             }
         }
+    }
+}
+
+void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * tabDistance) const
+{
+    for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
+    {
+        transformerIndicePrecedentEnIndiceLibrairie(tabPrecedentVersIndiceLibrairie,i);
+    }
+    
+    for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
+    {
+        cout<<"indice "<<i<<" : Librairie la plus proche = "<<tabPrecedentVersIndiceLibrairie[i]<<" et distance = "<<tabDistance[i]<<endl;
+    }
+}
+
+unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const
+{
+    if(tableau[indice] != indice)
+    {
+        tableau[indice] = transformerIndicePrecedentEnIndiceLibrairie(tableau, tableau [ tableau [indice] ]);
+        return indice;
+    }
+    else
+    {
+        return indice;
     }
 }

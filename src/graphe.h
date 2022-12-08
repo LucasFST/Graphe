@@ -33,11 +33,12 @@ class Graphe
         unsigned int getNbVoisins (unsigned int indice) const;
         unsigned getVoisin (unsigned int indice, Direction uneDirection) const;
         double getDistance(unsigned int indice, Direction uneDirection) const;
-        unsigned int getNbColonnes() const;
-        unsigned int getNbLignes() const;
+        unsigned int getNbColonnes () const;
+        unsigned int getNbLignes () const;
         bool getLibrairieOuNon (unsigned int indice) const;
-        void dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances);
-        void dijkstra(unsigned int * tabPrecedent, double * tabDistances);
+        void dijkstra (unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) const;
+        void dijkstra (unsigned int * tabPrecedent, double * tabDistances) const;
+        void voronoi (unsigned int * tabPrecedent, double * tabDistance) const;
         void testRegression() const;
         
         void sauvergarderGraphe (const char * nomFichier) const;
@@ -60,7 +61,8 @@ class Graphe
         int* tableauAltitude;
         bool* tableauLibrairieOuNon;
 
-        void chargerGrapheAvecLibrairie(const char * nomFichier);
+        void chargerGrapheAvecLibrairie (const char * nomFichier);
+        unsigned int transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const;
         
         
 };
