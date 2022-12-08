@@ -303,28 +303,35 @@ unsigned int Graphe::getNbLignes() const
 void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) const
 {
     assert(indiceDepart < nbColonnes * nbLignes);
+
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
         tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport au noeud de départ à +infini
     }
+
     tabDistances[indiceDepart] = 0; //le noeud de départ est à une distance nulle de lui même
+
     std::priority_queue<PriorityQueue> FilePrio; 
     FilePrio.push({indiceDepart,tabDistances[indiceDepart]}); //le premier élément de la FilePrio est le noeud de départ
+
     while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale du noeud de départ
     {
         PriorityQueue noeud = FilePrio.top();   //on récupère le noeud avec la distance au noeud de départ la plus petite
         FilePrio.pop(); // on le retire de FilePrio car il a déjà la distance minimale
+
         for(unsigned int i = 0; i < 4; i++) //on boucle pour accéder à ses éventuels voisins
         {
             if(voisinExiste(noeud.indice, static_cast<Direction>(i)))
             {
                 unsigned int indiceVoisin = getVoisin(noeud.indice, static_cast<Direction>(i));
+
                 if(indiceVoisin != indiceDepart)    //si indiceVoisin == indiceDepart on s'en moque car la distance est déjà minimale
                 {
                     double distanceDepartVoisin = tabDistances[indiceVoisin];
                     double distanceDepartNoeud = tabDistances [noeud.indice];
                     double distanceDepartNoeudVoisin = distanceDepartNoeud + getDistance(noeud.indice, static_cast<Direction>(i)); 
+
                     if((tabPrecedent[indiceVoisin] == indiceVoisin) || (distanceDepartNoeudVoisin < distanceDepartVoisin))
                     {
                         //si le noeud d'indice indiceVoisin n'avait pas encore été découvert ou 
@@ -385,19 +392,20 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
         if(tableauLibrairieOuNon[i])
         {
             tabDistances[i] = 0;
-            FilePrio.push({i,tabDistances[i]}); //le premier élément de la FilePrio est le noeud de départ
+            FilePrio.push({i,tabDistances[i]}); //on ajoute à FilePrio le noeud si celui ci correspond à une librairie
         }
         else
         {
-            tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport au noeud de départ à +infini
+            tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport aux librairies à +infini
         }
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
     }
 
-    while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale du noeud de départ
+    while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale de sa plus proche librairie
     {
-        PriorityQueue noeud = FilePrio.top();   //on récupère le noeud avec la distance au noeud de départ la plus petite
+        PriorityQueue noeud = FilePrio.top();   //on récupère le ou l'un des noeuds avec la distance la plus petite
         FilePrio.pop(); // on le retire de FilePrio car il a déjà la distance minimale
+
         for(unsigned int i = 0; i < 4; i++) //on boucle pour accéder à ses éventuels voisins
         {
             if(voisinExiste(noeud.indice, static_cast<Direction>(i)))
@@ -408,6 +416,7 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
                     double distanceDepartVoisin = tabDistances[indiceVoisin];
                     double distanceDepartNoeud = tabDistances [noeud.indice];
                     double distanceDepartNoeudVoisin = distanceDepartNoeud + getDistance(noeud.indice, static_cast<Direction>(i)); 
+                    
                     if((tabPrecedent[indiceVoisin] == indiceVoisin) || (distanceDepartNoeudVoisin < distanceDepartVoisin))
                     {
                         //si le noeud d'indice indiceVoisin n'avait pas encore été découvert ou 
