@@ -13,17 +13,20 @@ Graphe::Graphe(unsigned int nombreLignes, unsigned int nombreColonnes)
 {
     nbLignes = nombreLignes;
     nbColonnes = nombreColonnes;
-    tableauAltitude = new float [nbLignes * nbColonnes];
-    //par défaut au début les altitudes de toutes les cases sont initialisées à 0
+    tableauAltitude = new int [nbLignes * nbColonnes];
+    tableauLibrairieOuNon = new bool [nbLignes * nbColonnes];
+    //par défaut au début les altitudes de toutes les cases sont initialisées à 0 et les bool à false
     for(unsigned int i = 0 ; i < nbLignes * nbColonnes ; i++)
     {
         tableauAltitude[i] = 0;
+        tableauLibrairieOuNon[i] = false;
     }
 }
 
 Graphe::Graphe(const char * nomFichier)
 {
-    chargerGraphe(nomFichier);
+    //chargerGraphe(nomFichier);
+    chargerGrapheAvecLibrairie(nomFichier);
 }
 
 Graphe::~Graphe()
@@ -35,16 +38,23 @@ Graphe::~Graphe()
         nbLignes = 0;
         nbColonnes = 0;
     }
+    if(tableauLibrairieOuNon != NULL)
+    {
+        delete [] tableauLibrairieOuNon;
+        tableauLibrairieOuNon = NULL;
+        nbLignes = 0;
+        nbColonnes = 0;
+    }
 }
 
-float Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
+int Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
 {
     assert(indiceLigne < nbLignes);
     assert(indiceColonne < nbColonnes);
     return tableauAltitude [indiceLigne * nbColonnes + indiceColonne];
 }
 
-float Graphe::getAltitude (unsigned int indice) const
+int Graphe::getAltitude (unsigned int indice) const
 {
     assert(indice < nbColonnes * nbLignes);
     return tableauAltitude [indice];
@@ -74,12 +84,19 @@ void Graphe::affichageGraphe() const
     for(unsigned int i = 0; i < nbColonnes * nbLignes; i++)
     {
         if(i % nbColonnes == 0) cout<<endl;
-        cout<<"  "<<tableauAltitude[i]<<"  ";
+        if(tableauLibrairieOuNon[i]) 
+        {
+            cout<<"  "<<"L"<<tableauAltitude[i]<<"  ";
+        }
+        else
+        {
+            cout<<"  "<<tableauAltitude[i]<<"  ";
+        }
     }
     cout<<endl;
 }
 
-void Graphe::setAltitude(unsigned int indice, float nouvelleAltitude)
+void Graphe::setAltitude(unsigned int indice, int nouvelleAltitude)
 {
     assert(indice < nbLignes * nbColonnes);
     tableauAltitude [indice] = nouvelleAltitude;
@@ -205,18 +222,59 @@ unsigned int Graphe::getVoisin (unsigned int indice, Direction uneDirection) con
     }
 }
 
-void Graphe::chargerGraphe(const char * file) 
-{ 
-    ifstream fichier(file);
+bool Graphe::getLibrairieOuNon(unsigned int indice) const
+{
+    assert(indice < nbColonnes * nbLignes);
+    return tableauLibrairieOuNon[indice];
+}
+
+// void Graphe::chargerGraphe(const char * nomFichier) 
+// { 
+//     ifstream fichier(nomFichier);
+//     if(fichier.is_open())
+//     {
+//         while(!fichier.eof())
+//         {
+//             fichier >> nbColonnes >> nbLignes;
+//             tableauAltitude = new int [nbLignes * nbColonnes];
+//             for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
+//             {
+//                 fichier >> tableauAltitude[i] ;
+//             }
+//         }
+//         fichier.close();
+//     }
+//     else
+//     {
+//         cout<<"Impossible d'ouvrir le fichier ! "<<endl;
+//     }
+// }
+
+void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
+{
+    ifstream fichier(nomFichier);
+    string buffer;
     if(fichier.is_open())
     {
         while(!fichier.eof())
         {
             fichier >> nbColonnes >> nbLignes;
-            tableauAltitude = new float [nbLignes * nbColonnes];
+            tableauAltitude = new int [nbLignes * nbColonnes];
+            tableauLibrairieOuNon = new bool [nbLignes * nbColonnes];
             for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
             {
-                fichier >> tableauAltitude[i] ;
+                fichier >> buffer;
+                if(buffer[0] == 'L')
+                {
+                    tableauLibrairieOuNon[i] = true;
+                    buffer = buffer.erase(0,1);
+                    tableauAltitude[i] = stoi(buffer);
+                }
+                else
+                {
+                    tableauLibrairieOuNon[i] = false;
+                    tableauAltitude[i] = stoi(buffer);
+                }  
             }
         }
         fichier.close();
@@ -303,23 +361,6 @@ void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, do
     }
 }
 
-
-void Graphe::librairie(unsigned int * tabIndice, bool * tabLibrairie)
-{
-    string buffer;
-    for(unsigned int i=0; i<nbLignes; i++)
-    {
-        for(unsigned int j=0; j<nbColonnes; j++)
-        {
-            if(buffer[0] == 'L')
-            {
-                tabLibrairie[i*nbColonnes+nbLignes] = true;
-                buffer = buffer.erase(0,1);
-                tabIndice[i*nbColonnes+nbLignes] = stoi(buffer);
-            }
-        }
-    }
-}
 
 
 void Graphe::testRegression() const

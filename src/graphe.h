@@ -18,13 +18,13 @@ class Graphe
         Graphe (unsigned int nombreLignes, unsigned int nombreColonnes);
         Graphe (const char*);
         ~Graphe ();
-        float getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const;
-        float getAltitude (unsigned int indice) const;
+        int getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const;
+        int getAltitude (unsigned int indice) const;
         unsigned int getIndice (unsigned int indiceLigne, unsigned int indiceColonne) const;
         unsigned int getLigne (unsigned int indice) const;
         unsigned int getColonne (unsigned int indice) const;
         void affichageGraphe () const;
-        void setAltitude (unsigned int indice, float nouvelleAltitude);
+        void setAltitude (unsigned int indice, int nouvelleAltitude);
         bool voisinExiste (unsigned int indice, Direction uneDirection) const;
         unsigned int getVoisinNord (unsigned int indice) const;
         unsigned int getVoisinSud (unsigned int indice) const;
@@ -35,17 +35,18 @@ class Graphe
         double getDistance(unsigned int indice, Direction uneDirection) const;
         unsigned int getNbColonnes() const;
         unsigned int getNbLignes() const;
+        bool getLibrairieOuNon (unsigned int indice) const;
 
         void testRegression() const;
 
         
-        void chargerGraphe (const char * nomFichier);
+        //void chargerGraphe (const char * nomFichier);
         void sauvergarderGraphe (const char * nomFichier) const;
 
         void dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances);
 
-        void librairie(unsigned int * tabIndice, bool * tabLibrairie);
-
+        void chargerGrapheAvecLibrairie(const char * nomFichier);
+        
     private : 
 
         struct PriorityQueue 
@@ -60,7 +61,8 @@ class Graphe
         };
         
         unsigned int nbColonnes, nbLignes; 
-        float* tableauAltitude;
+        int* tableauAltitude;
+        bool* tableauLibrairieOuNon;
         
         
 };
