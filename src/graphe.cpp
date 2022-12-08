@@ -435,3 +435,48 @@ double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
             break;
     }
 }
+
+void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) 
+{
+    std::priority_queue<PriorityQueue> FilePrio; 
+    for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
+    {
+        if(tableauLibrairieOuNon[i])
+        {
+            tabDistances[i] = 0;
+            FilePrio.push({i,tabDistances[i]}); //le premier élément de la FilePrio est le noeud de départ
+        }
+        else
+        {
+            tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport au noeud de départ à +infini
+        }
+        tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
+    }
+
+    while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait la distance minimale du noeud de départ
+    {
+        PriorityQueue noeud = FilePrio.top();   //on récupère le noeud avec la distance au noeud de départ la plus petite
+        FilePrio.pop(); // on le retire de FilePrio car il a déjà la distance minimale
+        for(unsigned int i = 0; i < 4; i++) //on boucle pour accéder à ses éventuels voisins
+        {
+            if(voisinExiste(noeud.indice, static_cast<Direction>(i)))
+            {
+                unsigned int indiceVoisin = getVoisin(noeud.indice, static_cast<Direction>(i));
+                if( !getLibrairieOuNon(indiceVoisin) )    //si le noeud d'indice voisin n'est pas une librairie 
+                {
+                    double distanceDepartVoisin = tabDistances[indiceVoisin];
+                    double distanceDepartNoeud = tabDistances [noeud.indice];
+                    double distanceDepartNoeudVoisin = distanceDepartNoeud + getDistance(noeud.indice, static_cast<Direction>(i)); 
+                    if((tabPrecedent[indiceVoisin] == indiceVoisin) || (distanceDepartNoeudVoisin < distanceDepartVoisin))
+                    {
+                        //si le noeud d'indice indiceVoisin n'avait pas encore été découvert ou 
+                        //si distanceDepartNoeudVoisin < distanceDepartVoisin on MAJ les données du noeud d'indice indiceVoisin
+                        tabPrecedent[indiceVoisin] = noeud.indice;
+                        tabDistances[indiceVoisin] = distanceDepartNoeudVoisin;
+                        FilePrio.push({indiceVoisin,tabDistances[indiceVoisin]}); //on ajoute à FilePrio le noeud d'indice indiceVoisin
+                    }
+                }
+            }
+        }
+    }
+}

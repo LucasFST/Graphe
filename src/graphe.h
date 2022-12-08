@@ -36,16 +36,12 @@ class Graphe
         unsigned int getNbColonnes() const;
         unsigned int getNbLignes() const;
         bool getLibrairieOuNon (unsigned int indice) const;
-
-        void testRegression() const;
-
-        
-        //void chargerGraphe (const char * nomFichier);
-        void sauvergarderGraphe (const char * nomFichier) const;
-
         void dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances);
-
-        void chargerGrapheAvecLibrairie(const char * nomFichier);
+        void dijkstra(unsigned int * tabPrecedent, double * tabDistances);
+        void testRegression() const;
+        
+        void sauvergarderGraphe (const char * nomFichier) const;
+        //void chargerGraphe (const char * nomFichier);
         
     private : 
 
@@ -63,6 +59,8 @@ class Graphe
         unsigned int nbColonnes, nbLignes; 
         int* tableauAltitude;
         bool* tableauLibrairieOuNon;
+
+        void chargerGrapheAvecLibrairie(const char * nomFichier);
         
         
 };
