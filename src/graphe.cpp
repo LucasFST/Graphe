@@ -67,13 +67,13 @@ unsigned int Graphe::getIndice (unsigned int indiceLigne, unsigned int indiceCol
     return (indiceLigne * nbColonnes + indiceColonne);
 }
 
-unsigned int Graphe::getLigne (unsigned int indice) const
+unsigned int Graphe::getIndiceLigne (unsigned int indice) const
 {
     assert(indice < nbLignes * nbColonnes);
     return indice / nbColonnes;
 }
 
-unsigned int Graphe::getColonne (unsigned int indice) const
+unsigned int Graphe::getIndiceColonne (unsigned int indice) const
 {
     assert(indice < nbLignes * nbColonnes);
     return indice % nbColonnes;
@@ -108,7 +108,7 @@ bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection) const
     switch (uneDirection)
     {
         case Nord:
-            if(getLigne(indice) == 0) // si j'appartiens à la première ligne alors je n'ai pas de voisin Nord
+            if(getIndiceLigne(indice) == 0) // si j'appartiens à la première ligne alors je n'ai pas de voisin Nord
             {
                 return false;
             }
@@ -119,7 +119,7 @@ bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection) const
             break;
         
         case Est:
-            if(getColonne(indice)==nbColonnes-1) // si j'appartiens à la dernière colonne (càd la plus à droite|est) alors je n'ai pas de voisin Est
+            if(getIndiceColonne(indice)==nbColonnes-1) // si j'appartiens à la dernière colonne (càd la plus à droite|est) alors je n'ai pas de voisin Est
             {
                 return false;
             }
@@ -131,7 +131,7 @@ bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection) const
             break;
 
         case Sud:
-            if(getLigne(indice)==nbLignes-1) // si j'appartiens à la dernière ligne alors je n'ai pas de voisin Sud
+            if(getIndiceLigne(indice)==nbLignes-1) // si j'appartiens à la dernière ligne alors je n'ai pas de voisin Sud
             {
                 return false;
             }
@@ -142,7 +142,7 @@ bool Graphe::voisinExiste (unsigned int indice, Direction uneDirection) const
             break;
 
         case Ouest:
-            if(getColonne(indice)==0) // si j'appartiens à la première colonne (càd la plus à gauche|Ouest) alors je n'ai pas de voisin Ouest 
+            if(getIndiceColonne(indice)==0) // si j'appartiens à la première colonne (càd la plus à gauche|Ouest) alors je n'ai pas de voisin Ouest 
             {
                 return false;
             }
@@ -193,31 +193,23 @@ unsigned int Graphe::getVoisin (unsigned int indice, Direction uneDirection) con
     switch (uneDirection)
     {
         case Nord :
-            if(voisinExiste(indice, Nord))
-            {
-                return getVoisinNord(indice);
-            }
+            assert( (voisinExiste(indice, Nord)) );
+            return getVoisinNord(indice);
             break;
         
         case Est :
-            if(voisinExiste(indice, Est))
-            {
-                return getVoisinEst(indice);
-            }
+            assert( (voisinExiste(indice, Est)) );
+            return getVoisinEst(indice);
             break;
 
         case Sud :
-            if(voisinExiste(indice, Sud))
-            {
-                return getVoisinSud(indice);
-            }
+            assert( (voisinExiste(indice, Sud)) );
+            return getVoisinSud(indice);
             break;
 
         case Ouest :
-            if(voisinExiste(indice, Ouest))
-            {
-                return getVoisinOuest(indice);
-            }
+            assert( (voisinExiste(indice, Ouest)) );
+            return getVoisinOuest(indice);
             break;
     }
 }
@@ -228,27 +220,11 @@ bool Graphe::getLibrairieOuNon(unsigned int indice) const
     return tableauLibrairieOuNon[indice];
 }
 
-// void Graphe::chargerGraphe(const char * nomFichier) 
-// { 
-//     ifstream fichier(nomFichier);
-//     if(fichier.is_open())
-//     {
-//         while(!fichier.eof())
-//         {
-//             fichier >> nbColonnes >> nbLignes;
-//             tableauAltitude = new int [nbLignes * nbColonnes];
-//             for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
-//             {
-//                 fichier >> tableauAltitude[i] ;
-//             }
-//         }
-//         fichier.close();
-//     }
-//     else
-//     {
-//         cout<<"Impossible d'ouvrir le fichier ! "<<endl;
-//     }
-// }
+void Graphe::setLibrairieOuNon (unsigned int indice, bool librairieOuNon)
+{
+    assert(indice < nbLignes * nbColonnes);
+    tableauLibrairieOuNon [indice] = librairieOuNon;
+}
 
 void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
 {
@@ -293,11 +269,18 @@ void Graphe::sauvergarderGraphe (const char * nomFichier) const
         fichier << nbColonnes << " " << nbLignes << endl;
         for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
         {
-            if (i % nbColonnes == 0) 
+            if( (i > 0) && (i % nbColonnes == 0) ) 
             {
                 fichier << endl;
             }
-            fichier << tableauAltitude[i] << " ";
+            if(tableauLibrairieOuNon[i]) 
+            {
+                fichier<<"L"<<tableauAltitude[i]<<" ";
+            }
+            else
+            {
+                fichier<<tableauAltitude[i]<<" ";
+            }
         }
         fichier.close();
     }
@@ -319,6 +302,7 @@ unsigned int Graphe::getNbLignes() const
 
 void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) const
 {
+    assert(indiceDepart < nbColonnes * nbLignes);
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
@@ -355,77 +339,40 @@ void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, do
     }
 }
 
-
-
-void Graphe::testRegression() const
-{
-    Graphe unGraphe(3,5);
-    unGraphe.affichageGraphe();
-    unsigned int unIndice = unGraphe.getIndice(2,4); //le sommet sur la troisième ligne et sur la cinquième colonne  
-    assert(unIndice == 14);
-    assert(unGraphe.getLigne(unIndice) == 2);
-    assert(unGraphe.getColonne(unIndice) == 4);
-    assert(unGraphe.getAltitude(unIndice) == 0);
-    unGraphe.setAltitude(unIndice, 23);
-    unGraphe.affichageGraphe();
-    assert(unGraphe.getAltitude(unIndice) == 23);
-    assert(unGraphe.getAltitude(2,4) == 23);
-    assert(unGraphe.getNbVoisins(unIndice) == 2);
-    assert(unGraphe.getVoisinNord(unIndice) == 9); //9 = 14 - 5
-    unsigned int indiceVoisinNord = unGraphe.getVoisinNord(unIndice);
-    unGraphe.setAltitude(indiceVoisinNord, 13);
-    assert(unGraphe.getAltitude(indiceVoisinNord) == 13);
-    unGraphe.affichageGraphe();
-    assert(unGraphe.getVoisinOuest(unIndice) == 13);
-    assert(unGraphe.voisinExiste(unIndice, Ouest) == true);
-    assert(unGraphe.voisinExiste(unIndice, Sud) == false);
-    cout<<endl<<"tests passés avec succès"<<endl<<endl;
-
-}
-
-
 double Graphe::getDistance(unsigned int indice, Direction uneDirection) const
 {
+    assert(indice < nbColonnes * nbLignes);
+    unsigned int voisin;
+    double diffAltitude;
     switch(uneDirection)
     {
         case Sud:
-            if(voisinExiste(indice, uneDirection))
-            {
-                unsigned int voisin = getVoisinSud(indice);
-                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
-                return ( sqrt (1 + diffAltitude * diffAltitude ));
-            }
-            return -1;
+
+            assert( (voisinExiste(indice, uneDirection)) );
+            voisin = getVoisinSud(indice);
+            diffAltitude = getAltitude(indice) - getAltitude(voisin);
+            return ( sqrt (1 + diffAltitude * diffAltitude ));
             break;
         
         case Nord:
-            if(voisinExiste(indice, uneDirection))
-            {
-                unsigned int voisin = getVoisinNord(indice);
-                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
-                return ( sqrt (1 + diffAltitude * diffAltitude ));
-            }
-            return -1;
+            assert( (voisinExiste(indice, uneDirection)) );
+            voisin = getVoisinNord(indice);
+            diffAltitude = getAltitude(indice) - getAltitude(voisin);
+            return ( sqrt (1 + diffAltitude * diffAltitude ));
             break;
         
         case Est:
-            if(voisinExiste(indice, uneDirection))
-            {
-                unsigned int voisin = getVoisinEst(indice);
-                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
-                return ( sqrt (1 + diffAltitude * diffAltitude ));
-            }
-            return -1;
+            assert( (voisinExiste(indice, uneDirection)) );
+            voisin = getVoisinEst(indice);
+            diffAltitude = getAltitude(indice) - getAltitude(voisin);
+            return ( sqrt (1 + diffAltitude * diffAltitude ));
             break;
 
         case Ouest:
-            if(voisinExiste(indice, uneDirection))
-            {
-                unsigned int voisin = getVoisinOuest(indice);
-                double diffAltitude = getAltitude(indice) - getAltitude(voisin);
-                return ( sqrt (1 + diffAltitude * diffAltitude ));
-            }
-            return -1;
+            assert( (voisinExiste(indice, uneDirection)) );
+            voisin = getVoisinOuest(indice);
+            diffAltitude = getAltitude(indice) - getAltitude(voisin);
+            return ( sqrt (1 + diffAltitude * diffAltitude ));
             break;
     }
 }
@@ -499,4 +446,31 @@ unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int *
     {
         return indice;
     }
+}
+
+
+void Graphe::testRegression() const
+{
+    Graphe unGraphe(3,5);
+    unGraphe.affichageGraphe();
+    unsigned int unIndice = unGraphe.getIndice(2,4); //le sommet sur la troisième ligne et sur la cinquième colonne  
+    assert(unIndice == 14);
+    assert(unGraphe.getIndiceLigne(unIndice) == 2);
+    assert(unGraphe.getIndiceColonne(unIndice) == 4);
+    assert(unGraphe.getAltitude(unIndice) == 0);
+    unGraphe.setAltitude(unIndice, 23);
+    unGraphe.affichageGraphe();
+    assert(unGraphe.getAltitude(unIndice) == 23);
+    assert(unGraphe.getAltitude(2,4) == 23);
+    assert(unGraphe.getNbVoisins(unIndice) == 2);
+    assert(unGraphe.getVoisinNord(unIndice) == 9); //9 = 14 - 5
+    unsigned int indiceVoisinNord = unGraphe.getVoisinNord(unIndice);
+    unGraphe.setAltitude(indiceVoisinNord, 13);
+    assert(unGraphe.getAltitude(indiceVoisinNord) == 13);
+    unGraphe.affichageGraphe();
+    assert(unGraphe.getVoisinOuest(unIndice) == 13);
+    assert(unGraphe.voisinExiste(unIndice, Ouest) == true);
+    assert(unGraphe.voisinExiste(unIndice, Sud) == false);
+    cout<<endl<<"tests passés avec succès"<<endl<<endl;
+
 }

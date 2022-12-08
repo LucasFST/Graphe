@@ -19,6 +19,7 @@ int main()
     //     cout<<"indice "<<i<< " : "<<"distance = "<<tabDistances[i]<<"  et precédent = "<<tabPrecedent[i]<<endl;
     // }
     unGraphe.voronoi(tabPrecedent, tabDistances);
+    unGraphe.sauvergarderGraphe("./testSauvegarde.txt");
     delete []tabDistances;
     delete []tabPrecedent;
     return 0;
