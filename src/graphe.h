@@ -44,6 +44,8 @@ class Graphe
 
         void dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances);
 
+        void librairie(unsigned int * tabIndice, bool * tabLibrairie);
+
     private : 
 
         struct PriorityQueue 

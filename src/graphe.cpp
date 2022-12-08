@@ -304,6 +304,24 @@ void Graphe::dijkstra(unsigned int indiceDepart, unsigned int * tabPrecedent, do
 }
 
 
+void Graphe::librairie(unsigned int * tabIndice, bool * tabLibrairie)
+{
+    string buffer;
+    for(unsigned int i=0; i<nbLignes; i++)
+    {
+        for(unsigned int j=0; j<nbColonnes; j++)
+        {
+            if(buffer[0] == 'L')
+            {
+                tabLibrairie[i*nbColonnes+nbLignes] = true;
+                buffer = buffer.erase(0,1);
+                tabIndice[i*nbColonnes+nbLignes] = stoi(buffer);
+            }
+        }
+    }
+}
+
+
 void Graphe::testRegression() const
 {
     Graphe unGraphe(3,5);
