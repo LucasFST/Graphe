@@ -25,7 +25,6 @@ Graphe::Graphe(unsigned int nombreLignes, unsigned int nombreColonnes)
 
 Graphe::Graphe(const char * nomFichier)
 {
-    //chargerGraphe(nomFichier);
     chargerGrapheAvecLibrairie(nomFichier);
 }
 
@@ -440,16 +439,26 @@ void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * t
     
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
-        cout<<"indice "<<i<<" : Librairie la plus proche = "<<tabPrecedentVersIndiceLibrairie[i]<<" et distance = "<<tabDistance[i]<<endl;
+         if(i % nbColonnes == 0) cout<<endl;
+         if(tabDistance[i] == 0)
+         {
+            cout <<"\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< "   L   "<<" \033[0m";
+         }
+         else
+         {
+            cout << "\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< tabDistance[i]<<" \033[0m";
+         }
     }
 }
+
 
 unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const
 {
     if(tableau[indice] != indice)
     {
-        tableau[indice] = transformerIndicePrecedentEnIndiceLibrairie(tableau, tableau [ tableau [indice] ]);
-        return indice;
+        unsigned int newIndice = transformerIndicePrecedentEnIndiceLibrairie(tableau, tableau [ tableau [indice] ]);
+        tableau[indice] = newIndice;
+        return newIndice;
     }
     else
     {

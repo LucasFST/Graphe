@@ -8,7 +8,7 @@ using namespace std;
 
 int main() 
 {
-    Graphe unGraphe("./test.txt");
+    Graphe unGraphe("./test2.txt");
     unGraphe.affichageGraphe();
     unsigned int tailleTab = unGraphe.getNbColonnes() * unGraphe.getNbLignes();
     unsigned int * tabPrecedent = new unsigned int[tailleTab];
@@ -19,7 +19,6 @@ int main()
     //     cout<<"indice "<<i<< " : "<<"distance = "<<tabDistances[i]<<"  et precédent = "<<tabPrecedent[i]<<endl;
     // }
     unGraphe.voronoi(tabPrecedent, tabDistances);
-    unGraphe.sauvergarderGraphe("./testSauvegarde.txt");
     delete []tabDistances;
     delete []tabPrecedent;
     return 0;
