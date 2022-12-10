@@ -85,11 +85,11 @@ void Graphe::affichageGraphe() const
         if(i % nbColonnes == 0) cout<<endl;
         if(tableauLibrairieOuNon[i]) 
         {
-            cout<<"  "<<"L"<<tableauAltitude[i]<<"  ";
+            cout<<setw(5)<<"L"<<tableauAltitude[i];
         }
         else
         {
-            cout<<"  "<<tableauAltitude[i]<<"  ";
+            cout<<setw(6)<<tableauAltitude[i];
         }
     }
     cout<<endl;
@@ -430,17 +430,6 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
     }
 }
 
-template<typename T>
-size_t countDigits(T n)
-{
-    string tmp;
-
-    tmp = to_string(n);
-    if (n < 0)
-        return tmp.size() - 1;
-    return tmp.size();
-}
-
 void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * tabDistance) const
 {
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
@@ -461,7 +450,6 @@ void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * t
          }
     }
 }
-
 
 unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const
 {
