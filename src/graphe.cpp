@@ -430,6 +430,17 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
     }
 }
 
+template<typename T>
+size_t countDigits(T n)
+{
+    string tmp;
+
+    tmp = to_string(n);
+    if (n < 0)
+        return tmp.size() - 1;
+    return tmp.size();
+}
+
 void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * tabDistance) const
 {
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
@@ -442,11 +453,11 @@ void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * t
          if(i % nbColonnes == 0) cout<<endl;
          if(tabDistance[i] == 0)
          {
-            cout <<"\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< "   L   "<<" \033[0m";
+            cout <<"\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<<setw(8)<<"LIBRARY"<<" \033[0m";
          }
          else
          {
-            cout << "\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< tabDistance[i]<<" \033[0m";
+            cout << "\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< setw(8) << tabDistance[i] <<" \033[0m";
          }
     }
 }
