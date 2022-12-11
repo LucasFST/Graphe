@@ -34,16 +34,14 @@ Graphe::~Graphe()
     {
         delete [] tableauAltitude;
         tableauAltitude = NULL;
-        nbLignes = 0;
-        nbColonnes = 0;
     }
     if(tableauLibrairieOuNon != NULL)
     {
         delete [] tableauLibrairieOuNon;
         tableauLibrairieOuNon = NULL;
-        nbLignes = 0;
-        nbColonnes = 0;
     }
+    nbLignes = 0;
+    nbColonnes = 0;
 }
 
 int Graphe::getAltitude (unsigned int indiceLigne, unsigned int indiceColonne) const
@@ -85,7 +83,7 @@ void Graphe::affichageGraphe() const
         if(i % nbColonnes == 0) cout<<endl;
         if(tableauLibrairieOuNon[i]) 
         {
-            cout<<setw(5)<<"L"<<tableauAltitude[i];
+            cout<<setw(5)<<"L"<<tableauAltitude[i]; //setw() définit la largeur de champ à utiliser pour les opérations de sortie.
         }
         else
         {
@@ -231,7 +229,7 @@ void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
     string buffer;
     if(fichier.is_open())
     {
-        while(!fichier.eof())
+        while(!fichier.eof())   //tant qu'on est pas arrivé à la fin du fichier
         {
             fichier >> nbColonnes >> nbLignes;
             tableauAltitude = new int [nbLignes * nbColonnes];
@@ -239,11 +237,11 @@ void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
             for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
             {
                 fichier >> buffer;
-                if(buffer[0] == 'L')
+                if(buffer[0] == 'L')    //si le premier caractère récupéré est L il s'agit d'une librairie
                 {
                     tableauLibrairieOuNon[i] = true;
-                    buffer = buffer.erase(0,1);
-                    tableauAltitude[i] = stoi(buffer);
+                    buffer = buffer.erase(0,1); //on enlève L de la string
+                    tableauAltitude[i] = stoi(buffer);  //on convertit le reste de la string en int
                 }
                 else
                 {
@@ -272,7 +270,7 @@ void Graphe::sauvergarderGraphe (const char * nomFichier) const
             {
                 fichier << endl;
             }
-            if(tableauLibrairieOuNon[i]) 
+            if(tableauLibrairieOuNon[i]) //si la case d'indice i est une librairie
             {
                 fichier<<"L"<<tableauAltitude[i]<<" ";
             }
@@ -432,34 +430,41 @@ void Graphe::dijkstra(unsigned int * tabPrecedent, double * tabDistances) const
 
 void Graphe::voronoi (unsigned int * tabPrecedentVersIndiceLibrairie, double * tabDistance) const
 {
+    //Pour chaque noeud, on remonte au précédent de son précédent ... jusqu'à ce qu'on arrive à une librairie 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
         transformerIndicePrecedentEnIndiceLibrairie(tabPrecedentVersIndiceLibrairie,i);
     }
     
+    //! il y a 256 nuances de couleurs (de 0 à 255)
+    //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
+
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
          if(i % nbColonnes == 0) cout<<endl;
-         if(tabDistance[i] == 0)
+         if(tabDistance[i] == 0)    //si la distance stokée est 0, c'est qu'il s'agit d'une librairie
          {
-            cout <<"\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<<setw(8)<<"LIBRARY"<<" \033[0m";
+            cout <<"\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%256<<"m "<<setw(8)<<"LIBRARY"<<" \033[0m";
          }
-         else
+         else //sinon il s'agit d'un noeud normal
          {
-            cout << "\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%257<<"m "<< setw(8) << tabDistance[i] <<" \033[0m";
+            cout << "\033[48;5;"<<tabPrecedentVersIndiceLibrairie[i]%256<<"m "<< setw(8) << tabDistance[i] <<" \033[0m";
          }
     }
 }
 
 unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const
 {
-    if(tableau[indice] != indice)
+    if(tableau[indice] != indice)   //si le précédent du noeud n'est pas lui même (ce n'est pas une librairie)
     {
-        unsigned int newIndice = transformerIndicePrecedentEnIndiceLibrairie(tableau, tableau [ tableau [indice] ]);
-        tableau[indice] = newIndice;
+        //on appel récursivement la fonction pour la case dont l'indice est son précédent et le résultat retourné est
+        //maintenant le précédent de son précédent ... donc enfaite l'indice de la librairie dont il est le plus proche
+
+        unsigned int newIndice = transformerIndicePrecedentEnIndiceLibrairie(tableau, tableau [ tableau [indice] ]); 
+        tableau[indice] = newIndice; 
         return newIndice;
     }
-    else
+    else //si le précédent du noeud est lui-même (c'est une librairie)
     {
         return indice;
     }
