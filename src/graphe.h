@@ -1,5 +1,6 @@
 #ifndef _GRAPHE_H
 #define _GRAPHE_H
+#include <iostream>
 
 enum Direction { Nord = 0, Est = 1, Sud = 2, Ouest = 3};
 class Graphe
@@ -36,8 +37,10 @@ class Graphe
         void affichageGraphe () const;
         
         //* Gestion des librairies (bool)
-        bool getLibrairieOuNon (unsigned int indice) const;
-        void setLibrairieOuNon (unsigned int indice, bool librairieOuNon);
+        // bool getLibrairieOuNon (unsigned int indice) const;
+        // double getPrixLivraisonLibrairie (unsigned int indice) const;
+        // void setLibrairieOuNon (unsigned int indice, bool librairieOuNon);
+        // void setPrixLivraisonLibrairie (unsigned int indice, double tauxKilometrique);
 
         //* Distance entre deux noeuds
         double getDistance(unsigned int indice, Direction uneDirection) const;
@@ -46,36 +49,53 @@ class Graphe
         unsigned int getNbColonnes () const;
         unsigned int getNbLignes () const;
 
-        //* Algo de Dijkstra
-        void dijkstra (unsigned int indiceDepart, unsigned int * tabPrecedent, double * tabDistances) const;
-        void dijkstra (unsigned int * tabPrecedent, double * tabDistances) const;
-
         //* Procédure de Voronoi
-        void voronoi (unsigned int * tabPrecedent, double * tabDistance) const;
+        void voronoiDistance () const;
+        void voronoiLivraison () const;
         
         //* Sauvegarder le graphe dans un fichier txt
-        void sauvergarderGraphe (const char * nomFichier) const;
+        // void sauvergarderGraphe (const char * nomFichier) const;
         
         //* Procédure avec divers tests des fonctions
-        void testRegression() const;
+        //void testRegression() const;
 
     private : 
-        struct PriorityQueue 
+        struct PriorityQueueDistance 
         {
             unsigned int indice;
             double distance;
 
-            bool operator < (const PriorityQueue &pq) const
+            bool operator < (const PriorityQueueDistance&pq) const
             {
                 return (distance < pq.distance);
+            }
+        };
+
+        struct PriorityQueueLivraison
+        {
+            unsigned int indice;
+            double distance;
+            double tauxKilometrique;
+
+            bool operator < (const PriorityQueueLivraison &pq) const
+            {
+                return ( (distance * tauxKilometrique) < (pq.distance * pq.tauxKilometrique) );
             }
         };
         
         unsigned int nbColonnes, nbLignes; 
         int* tableauAltitude;
-        bool* tableauLibrairieOuNon;
+        std::pair <bool,double> * tableauLibrairieOuNon;
+
+        //* Pour charger un graphe depuis un fichier txt
         void chargerGrapheAvecLibrairie (const char * nomFichier);
+
+        //* Pour retrouver la librairie à partir du noeud précédent
         unsigned int transformerIndicePrecedentEnIndiceLibrairie (unsigned int * tableau, unsigned int indice) const;
+
+        //* Algo de Dijkstra
+        void dijkstraDistance (unsigned int * tabPrecedent, double * tabDistances) const;
+        void dijkstraLivraison (unsigned int * tabPrecedent, std::pair <double,double> * tabPrixDistances) const;
 };
 
 #endif
