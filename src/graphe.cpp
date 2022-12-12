@@ -416,6 +416,9 @@ void Graphe::voronoiDistance () const
     }
     //! il y a 256 nuances de couleurs (de 0 à 255)
     //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
+
+    cout<<"Diagramme de Voronoi pour la distance : "<<endl<<endl;
+
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
          if(i % nbColonnes == 0) cout<<endl;
@@ -549,6 +552,8 @@ void Graphe::voronoiLivraison () const
     
     //! il y a 256 nuances de couleurs (de 0 à 255)
     //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
+
+    cout<<"Diagramme de Voronoi pour le coût de la livraison : "<<endl<<endl;
 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
