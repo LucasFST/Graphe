@@ -31,7 +31,7 @@ class Graphe
         unsigned int getVoisinEst (unsigned int indice) const;
         unsigned int getVoisinOuest (unsigned int indice) const;
         unsigned int getNbVoisins (unsigned int indice) const;
-        unsigned getVoisin (unsigned int indice, Direction uneDirection) const;
+        unsigned int getVoisin (unsigned int indice, Direction uneDirection) const;
         
         //* Affichage
         void affichageGraphe () const;
@@ -54,10 +54,10 @@ class Graphe
         void voronoiLivraison () const;
         
         //* Sauvegarder le graphe dans un fichier txt
-        // void sauvergarderGraphe (const char * nomFichier) const;
+        void sauvergarderGraphe (const char * nomFichier) const;
         
         //* Procédure avec divers tests des fonctions
-        //void testRegression() const;
+        void testRegression() const;
 
     private : 
         struct PriorityQueueDistance 

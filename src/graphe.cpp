@@ -7,6 +7,7 @@
 #include <queue>
 #include <limits>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -277,34 +278,48 @@ void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
     }
 }
 
-// void Graphe::sauvergarderGraphe (const char * nomFichier) const
-// {
-//     ofstream fichier(nomFichier);
-//     if(fichier.is_open()) 
-//     {
-//         fichier << nbColonnes << " " << nbLignes << endl;
-//         for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
-//         {
-//             if( (i > 0) && (i % nbColonnes == 0) ) 
-//             {
-//                 fichier << endl;
-//             }
-//             if(tableauLibrairieOuNon[i].first) //si la case d'indice i est une librairie
-//             {
-//                 fichier<<"L"<<tableauAltitude[i]<<" ";
-//             }
-//             else
-//             {
-//                 fichier<<tableauAltitude[i]<<" ";
-//             }
-//         }
-//         fichier.close();
-//     }
-//     else 
-//     {
-//         cout << "Impossible de sauvegarder le graphe !" << endl;
-//     }
-// }
+void Graphe::sauvergarderGraphe (const char * nomFichier) const
+{
+    ofstream fichier(nomFichier);
+    if(fichier.is_open()) 
+    {
+        fichier << nbColonnes << " " << nbLignes << endl;
+        for (unsigned int i = 0; i < nbColonnes * nbLignes; i++) 
+        {
+            if( (i > 0) && (i % nbColonnes == 0) ) 
+            {
+                fichier << endl;
+            }
+            if(i % nbColonnes == nbColonnes - 1)
+            {
+                if(tableauLibrairieOuNon[i].first) //si la case d'indice i est une librairie
+                {
+                    fichier<<"L"<<tableauAltitude[i]<<"/"<<tableauLibrairieOuNon[i].second;
+                }
+                else
+                {
+                    fichier<<tableauAltitude[i];
+                }
+            }
+            else
+            {
+                if(tableauLibrairieOuNon[i].first) //si la case d'indice i est une librairie
+                {
+                    fichier<<"L"<<tableauAltitude[i]<<"/"<<tableauLibrairieOuNon[i].second<<" ";
+                }
+                else
+                {
+                    fichier<<tableauAltitude[i]<<" ";
+                }
+            }
+        }
+        fichier.close();
+    }
+    else 
+    {
+        cout << "Impossible de sauvegarder le graphe !" << endl;
+    }
+}
 
 unsigned int Graphe::getNbColonnes() const
 {
@@ -417,7 +432,7 @@ void Graphe::voronoiDistance () const
     //! il y a 256 nuances de couleurs (de 0 à 255)
     //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
 
-    cout<<"Diagramme de Voronoi pour la distance : "<<endl<<endl;
+    cout<<"Diagramme de Voronoi pour la distance : "<<endl;
 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {
@@ -454,34 +469,49 @@ unsigned int Graphe::transformerIndicePrecedentEnIndiceLibrairie (unsigned int *
 }
 
 
-// void Graphe::testRegression() const
-// {
-//     Graphe unGraphe(3,5);
-//     unGraphe.affichageGraphe();
-//     unsigned int unIndice = unGraphe.getIndice(2,4); //le sommet sur la troisième ligne et sur la cinquième colonne  
-//     assert(unIndice == 14);
-//     assert(unGraphe.getIndiceLigne(unIndice) == 2);
-//     assert(unGraphe.getIndiceColonne(unIndice) == 4);
-//     assert(unGraphe.getAltitude(unIndice) == 0);
-//     unGraphe.setAltitude(unIndice, 23);
-//     unGraphe.affichageGraphe();
-//     assert(unGraphe.getAltitude(unIndice) == 23);
-//     assert(unGraphe.getAltitude(2,4) == 23);
-//     assert(unGraphe.getNbVoisins(unIndice) == 2);
-//     assert(unGraphe.getVoisinNord(unIndice) == 9); //9 = 14 - 5
-//     unsigned int indiceVoisinNord = unGraphe.getVoisinNord(unIndice);
-//     unGraphe.setAltitude(indiceVoisinNord, 13);
-//     assert(unGraphe.getAltitude(indiceVoisinNord) == 13);
-//     unGraphe.affichageGraphe();
-//     assert(unGraphe.getVoisinOuest(unIndice) == 13);
-//     assert(unGraphe.voisinExiste(unIndice, Ouest) == true);
-//     assert(unGraphe.voisinExiste(unIndice, Sud) == false);
-//     cout<<endl<<"tests passés avec succès"<<endl<<endl;
+void Graphe::testRegression() const
+{
+    //* Test avec le constructeur sans fichier txt
+    Graphe unGraphe(3,5);
 
-// }
+    //* Tests dimensions graphe
+    assert(unGraphe.getNbColonnes()==5);
+    assert(unGraphe.getNbLignes()==3);
+
+    //* Tests indice
+    unsigned int unIndice = unGraphe.getIndice(2,4); //le sommet sur la troisième ligne et sur la cinquième colonne  
+    assert(unIndice == 14); //unIndice = 2 * 5 + 4 (indiceLigne * nbColonnes + indiceColonne)
+    assert(unGraphe.getIndiceLigne(unIndice) == 2);
+    assert(unGraphe.getIndiceColonne(unIndice) == 4);
+
+    //* Tests altitude
+    assert(unGraphe.getAltitude(unIndice) == 0); //par défaut les altitudes sont à 0
+    unGraphe.setAltitude(unIndice, 23); //on la modifie à 23
+    assert(unGraphe.getAltitude(unIndice) == 23);
+    assert(unGraphe.getAltitude(2,4) == 23);
+
+    //* Tests voisin
+    assert(unGraphe.getNbVoisins(unIndice) == 2); //car le noeud d'indice unIndice est celui en bas à droite
+    assert(unGraphe.getVoisinNord(unIndice) == 9); //9 = 14 - 5
+    assert(unGraphe.getVoisinOuest(unIndice) == 13); //13 = 14 - 1
+    assert(unGraphe.voisinExiste(unIndice, Ouest) == true);
+    assert(unGraphe.voisinExiste(unIndice, Sud) == false);
+    assert(unGraphe.voisinExiste(unIndice, Est) == false);
+    assert(unGraphe.voisinExiste(unIndice, Nord) == true);
+    assert(unGraphe.getVoisin(unIndice, Nord) == unGraphe.getVoisinNord(unIndice));
+    assert(unGraphe.getVoisin(unIndice, Ouest) == unGraphe.getVoisinOuest(unIndice));
+    
+    //* Tests DIstance
+    assert(unGraphe.getDistance(unIndice, Nord) == sqrt(1 + (23 * 23)));
+    unGraphe.setAltitude(9, 22); //on passe l'altitude du voisin Nord (d'indice 9) de 0 à 22
+    assert(unGraphe.getDistance(unIndice, Nord) == sqrt(2));
+
+    cout<<endl<<"Tous les tests ont été passés avec succès"<<endl<<endl;
+
+}
 
 
-void Graphe::dijkstraLivraison(unsigned int * tabPrecedent, std::pair <double,double> * tabPrixDistances) const //<double,double> pour <prix,distance
+void Graphe::dijkstraLivraison(unsigned int * tabPrecedent, std::pair <double,double> * tabPrixDistances) const //<double,double> pour <prix,distance>
 {
     std::priority_queue<PriorityQueueLivraison> FilePrio; 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
@@ -553,7 +583,7 @@ void Graphe::voronoiLivraison () const
     //! il y a 256 nuances de couleurs (de 0 à 255)
     //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
 
-    cout<<"Diagramme de Voronoi pour le coût de la livraison : "<<endl<<endl;
+    cout<<"Diagramme de Voronoi pour le coût de la livraison : "<<endl;
 
     for(unsigned int i = 0; i < nbColonnes * nbLignes ; i++) 
     {

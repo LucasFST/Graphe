@@ -13,5 +13,6 @@ int main()
     unGraphe.voronoiDistance();
     cout<<endl<<endl;
     unGraphe.voronoiLivraison();
+    unGraphe.sauvergarderGraphe("./testSauvegarde.txt");
     return 0;
 }
