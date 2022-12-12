@@ -13,3 +13,7 @@ obj/main.o: src/main.cpp src/graphe.h
 
 bin/exe: obj/main.o obj/graphe.o
 	$(CXX_COMPILER) obj/main.o obj/graphe.o -o $@ $(CXX_FLAGS)
+
+clean :
+	rm -f obj/*
+	rm -f bin/*

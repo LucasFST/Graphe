@@ -36,11 +36,12 @@ class Graphe
         //* Affichage
         void affichageGraphe () const;
         
-        //* Gestion des librairies (bool)
-        // bool getLibrairieOuNon (unsigned int indice) const;
-        // double getPrixLivraisonLibrairie (unsigned int indice) const;
-        // void setLibrairieOuNon (unsigned int indice, bool librairieOuNon);
-        // void setPrixLivraisonLibrairie (unsigned int indice, double tauxKilometrique);
+        //* Gestion des librairies 
+        void ajouterLibrairie (unsigned int indice, double tauxKilometrique);
+        void supprimerLibrairie (unsigned int indice);
+        void modifierTauxKilometriqueLibrairie (unsigned int indice, double newTauxkilometrique);
+        double getTauxKilometriqueLibrairie (unsigned int indice) const;
+        bool estUneLibrairieOuNon (unsigned int indice) const;
 
         //* Distance entre deux noeuds
         double getDistance(unsigned int indice, Direction uneDirection) const;
@@ -60,6 +61,8 @@ class Graphe
         void testRegression() const;
 
     private : 
+
+        //*structure pour l'algo de dijkstra pour les distances
         struct PriorityQueueDistance 
         {
             unsigned int indice;
@@ -71,6 +74,7 @@ class Graphe
             }
         };
 
+        //*structure pour l'algo de dijkstra pour les livraisons
         struct PriorityQueueLivraison
         {
             unsigned int indice;
@@ -85,7 +89,7 @@ class Graphe
         
         unsigned int nbColonnes, nbLignes; 
         int* tableauAltitude;
-        std::pair <bool,double> * tableauLibrairieOuNon;
+        std::pair <bool,double> * tableauLibrairieOuNon; //bool = librairieOuNon et double = tauxKilométrique si librairie
 
         //* Pour charger un graphe depuis un fichier txt
         void chargerGrapheAvecLibrairie (const char * nomFichier);

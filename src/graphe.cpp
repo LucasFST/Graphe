@@ -21,7 +21,7 @@ Graphe::Graphe(unsigned int nombreLignes, unsigned int nombreColonnes)
     for(unsigned int i = 0 ; i < nbLignes * nbColonnes ; i++)
     {
         tableauAltitude[i] = 0;
-        tableauLibrairieOuNon[i] = std::make_pair(false,numeric_limits<unsigned int>::infinity());
+        tableauLibrairieOuNon[i] = std::make_pair(false,numeric_limits<double>::infinity());
     }
 }
 
@@ -80,6 +80,7 @@ unsigned int Graphe::getIndiceColonne (unsigned int indice) const
 
 void Graphe::affichageGraphe() const
 {
+    cout<<"Affichage du graphe en dur : "<<endl;
     for(unsigned int i = 0; i < nbColonnes * nbLignes; i++)
     {
         if(i % nbColonnes == 0) cout<<endl;
@@ -213,29 +214,39 @@ unsigned int Graphe::getVoisin (unsigned int indice, Direction uneDirection) con
     }
 }
 
-// bool Graphe::getLibrairieOuNon(unsigned int indice) const
-// {
-//     assert(indice < nbColonnes * nbLignes);
-//     return tableauLibrairieOuNon[indice].first;
-// }
+void Graphe::ajouterLibrairie (unsigned int indice, double tauxKilometrique)
+{
+    assert (indice < nbColonnes * nbLignes);
+    tableauLibrairieOuNon[indice].first = true;
+    tableauLibrairieOuNon[indice].second = tauxKilometrique;
+}
 
-// double Graphe::getPrixLivraisonLibrairie (unsigned int indice) const
-// {
-//     assert(indice < nbColonnes * nbLignes);
-//     return tableauLibrairieOuNon[indice].second;
-// }
+void Graphe::supprimerLibrairie (unsigned int indice)
+{
+    assert (indice < nbColonnes * nbLignes);
+    tableauLibrairieOuNon[indice].first = false;
+    tableauLibrairieOuNon[indice].second = numeric_limits<double>::infinity();
+}
 
-// void Graphe::setLibrairieOuNon (unsigned int indice, bool librairieOuNon)
-// {
-//     assert(indice < nbLignes * nbColonnes);
-//     tableauLibrairieOuNon[indice].first = librairieOuNon;
-// }
+void Graphe::modifierTauxKilometriqueLibrairie (unsigned int indice, double newTauxkilometrique)
+{
+    assert(indice < nbColonnes * nbLignes);
+    assert (tableauLibrairieOuNon[indice].first); //on verifie que le noeud d'indice 'indice' est bien une librairie
+    tableauLibrairieOuNon[indice].second = newTauxkilometrique;
+}
 
-// void Graphe::setPrixLivraisonLibrairie (unsigned int indice, double tauxKilometrique)
-// {
-//     assert(indice < nbColonnes * nbLignes);
-//     tableauLibrairieOuNon[indice].second = tauxKilometrique;
-// }
+double Graphe::getTauxKilometriqueLibrairie (unsigned int indice) const
+{
+    assert(indice < nbColonnes * nbLignes);
+    assert (tableauLibrairieOuNon[indice].first); //on verifie que le noeud d'indice 'indice' est bien une librairie
+    return tableauLibrairieOuNon[indice].second;
+}
+
+bool Graphe::estUneLibrairieOuNon (unsigned int indice) const
+{
+    assert(indice < nbColonnes * nbLignes);
+    return tableauLibrairieOuNon[indice].first;
+}
 
 void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
 {
@@ -257,15 +268,15 @@ void Graphe::chargerGrapheAvecLibrairie(const char * nomFichier)
                     buffer = buffer.erase(0,1); //on enlève L de la string
                     string temp;
                     stringstream input_stringstream(buffer);
-                    getline(input_stringstream, temp,'/');
-                    tableauAltitude[i] = stoi(temp);
-                    getline(input_stringstream, temp);
-                    tableauLibrairieOuNon[i].second = stod(temp);
+                    getline(input_stringstream, temp,'/'); //on récupère les caractères jusqu'au /
+                    tableauAltitude[i] = stoi(temp); //comme ça correspond à l'altitude on remplit le tableau d'altitude
+                    getline(input_stringstream, temp); //on finit de récupérer les dernier caractères, càd ceux après le /
+                    tableauLibrairieOuNon[i].second = stod(temp); //comme ça correspond au taux kilométrique on remplit le tableau de librairies
                 }
                 else
                 {
                     tableauLibrairieOuNon[i].first = false;
-                    tableauLibrairieOuNon[i].second = numeric_limits<unsigned int>::infinity();
+                    tableauLibrairieOuNon[i].second = numeric_limits<double>::infinity();
                     tableauAltitude[i] = stoi(buffer);
                 }  
             }
@@ -290,7 +301,7 @@ void Graphe::sauvergarderGraphe (const char * nomFichier) const
             {
                 fichier << endl;
             }
-            if(i % nbColonnes == nbColonnes - 1)
+            if(i % nbColonnes == nbColonnes - 1) // si on arrive en fin de ligne il ne faut pas mettre d'espace après le noeud
             {
                 if(tableauLibrairieOuNon[i].first) //si la case d'indice i est une librairie
                 {
@@ -381,7 +392,7 @@ void Graphe::dijkstraDistance(unsigned int * tabPrecedent, double * tabDistances
         }
         else
         {
-            tabDistances[i] = numeric_limits<unsigned int>::infinity(); //on initialise les distances par rapport aux librairies à +infini
+            tabDistances[i] = numeric_limits<double>::infinity(); //on initialise les distances par rapport aux librairies à +infini
         }
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
     }
@@ -429,6 +440,7 @@ void Graphe::voronoiDistance () const
     {
         transformerIndicePrecedentEnIndiceLibrairie(tabPrecedent,i);
     }
+
     //! il y a 256 nuances de couleurs (de 0 à 255)
     //! donc pour avoir une couleur par librairie, on choisit la couleur égale à l'indice de la librairie % 256
 
@@ -446,7 +458,7 @@ void Graphe::voronoiDistance () const
             cout << "\033[48;5;"<<tabPrecedent[i]%256<<"m "<< setw(8) << tabDistances[i] <<" \033[0m";
          }
     }
-
+    cout<<endl;
     delete []tabPrecedent;
     delete []tabDistances;
 }
@@ -501,12 +513,26 @@ void Graphe::testRegression() const
     assert(unGraphe.getVoisin(unIndice, Nord) == unGraphe.getVoisinNord(unIndice));
     assert(unGraphe.getVoisin(unIndice, Ouest) == unGraphe.getVoisinOuest(unIndice));
     
-    //* Tests DIstance
+    //* Tests Distance
     assert(unGraphe.getDistance(unIndice, Nord) == sqrt(1 + (23 * 23)));
     unGraphe.setAltitude(9, 22); //on passe l'altitude du voisin Nord (d'indice 9) de 0 à 22
     assert(unGraphe.getDistance(unIndice, Nord) == sqrt(2));
 
-    cout<<endl<<"Tous les tests ont été passés avec succès"<<endl<<endl;
+    //* Tests des librairies
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].first == false); //ce n'est pas une librairie
+    assert (!unGraphe.estUneLibrairieOuNon(unIndice));
+    unGraphe.ajouterLibrairie(unIndice, 1.5);
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].first == true); //c'est maintenant une librairie
+    assert (unGraphe.estUneLibrairieOuNon(unIndice));
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].second == 1.5);
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].second == unGraphe.getTauxKilometriqueLibrairie(unIndice));
+    unGraphe.modifierTauxKilometriqueLibrairie(unIndice, 2.3);
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].second == unGraphe.getTauxKilometriqueLibrairie(unIndice));
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].second == 2.3);
+    unGraphe.supprimerLibrairie(unIndice);
+    assert (unGraphe.tableauLibrairieOuNon[unIndice].first == false); //c'est n'est plus une librairie
+
+    cout<<endl<<"Tous les tests des fonctions et procédures ont été passés avec succès"<<endl;
 
 }
 
@@ -526,16 +552,16 @@ void Graphe::dijkstraLivraison(unsigned int * tabPrecedent, std::pair <double,do
         else
         {
             //on initialise les prix et les distances par rapport aux librairies à +infini
-            tabPrixDistances[i].first = numeric_limits<unsigned int>::infinity();
-            tabPrixDistances[i].second = numeric_limits<unsigned int>::infinity(); 
+            tabPrixDistances[i].first = numeric_limits<double>::infinity();
+            tabPrixDistances[i].second = numeric_limits<double>::infinity(); 
         }
         tabPrecedent[i] = i;    //chaque noeud est son propre précédent au début
     }
 
     while(!FilePrio.empty())    //boucle jusqu'à ce que chaque noeud ait le choix optimal de librairie (livraison la moins chère)
     {
-        PriorityQueueLivraison noeud = FilePrio.top();   //on récupère le ou l'un des noeuds avec la distance la plus petite
-        FilePrio.pop(); // on le retire de FilePrio car il a déjà la distance minimale
+        PriorityQueueLivraison noeud = FilePrio.top();   //on récupère le ou l'un des noeuds avec la livraison optimale
+        FilePrio.pop(); // on le retire de FilePrio car il a déjà la lvraison optimale
 
         for(unsigned int i = 0; i < 4; i++) //on boucle pour accéder à ses éventuels voisins
         {
@@ -598,6 +624,7 @@ void Graphe::voronoiLivraison () const
             cout<<setw(8) << tabPrixDistances[i].first * tabPrixDistances[i].second  <<" \033[0m";
          }
     }
+    cout<<endl;
     delete []tabPrixDistances;
     delete []tabPrecedent;
 }
