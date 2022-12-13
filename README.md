@@ -38,10 +38,10 @@ L1/2 2 2 6
 8 9 L20/4 14
 
 ## Création d'un graphe :
-    # À partir d'un fichier .txt situé dans le répertoire data :
+    - À partir d'un fichier .txt situé dans le répertoire data :
         Graphe unGraphe ("./data/nomFichier.txt");
 
-    # Juste en indiquant le nombre de colonnes et de lignes du graphe :
+    - Juste en indiquant le nombre de colonnes et de lignes du graphe :
         unsigned int nombreLignes = ... ;
         unsigned int nombreColonnes = ... ;
         Graphe unGraphe (nombreLignes, nombreColonnes);
@@ -55,4 +55,4 @@ L1/2 2 2 6
  - commande : ./bin/exe
 
 ## Suppression de l'éxécutable dans /bin et des .o dans /obj : 
-    commande : make clean 
+ - commande : make clean 
