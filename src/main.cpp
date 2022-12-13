@@ -8,7 +8,7 @@ using namespace std;
 
 int main() 
 {
-    Graphe unGraphe("./data/test2.txt");
+    Graphe unGraphe("./data/test.txt");
     unGraphe.testRegression();
     cout<<endl;
     unGraphe.affichageGraphe();
