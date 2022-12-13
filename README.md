@@ -21,8 +21,29 @@ L1/2 2 2 6
 5 L9/3 8 15
 8 9 L20/4 14
 
-## Compilation du programme
+## Arborescence :
+
+GrapheLIFAPC/
+	├─ bin/
+	│  ├─ contient l'exécutable du projet
+	├─ data/
+	│  ├─ contient les fichiers .txt à manipuler
+	├─ obj/
+	│  ├─ contient les fichiers objets du projet 
+    ├─ src/
+	│  ├─ graphe.cpp
+    │  ├─ graphe.h
+    │  ├─ main.cpp
+    ├─ Makefile
+	├─ README.md
+
+
+## Compilation du programme :
  - commande : make
 
-## Execution du programme
+## Execution du programme :
  - commande : ./bin/exe
+
+## Suppression es éxécutables dans /bin et les .o dans /obj) : 
+
+    commande : make clean 
