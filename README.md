@@ -11,17 +11,17 @@
 
  Graphe/
  ├─ bin/
- │  ├─ contient l'exécutable du projet
- ├─ data/
- │  ├─ contient les fichiers .txt à manipuler
- ├─ obj/
- │  ├─ contient les fichiers objets du projet 
+	│  ├─ contient l'exécutable du projet
+	├─ data/
+	│  ├─ contient les fichiers .txt à manipuler
+	├─ obj/
+	│  ├─ contient les fichiers objets du projet 
  ├─ src/
- │  ├─ graphe.cpp
+	│  ├─ graphe.cpp
  │  ├─ graphe.h
  │  ├─ main.cpp
  ├─ Makefile
- ├─ README.md
+	├─ README.md
 
 ## Fichiers textes : 
     - Les fichiers textes sont ceux qui stockent les graphes.
@@ -32,10 +32,10 @@
 
 ## Voici un exemple de fichier texte adéquat :
 
- 4 3
- L1/2 2 2 6
- 5 L9/3 8 15
- 8 9 L20/4 14
+  4 3
+  L1/2 2 2 6
+  5 L9/3 8 15
+  8 9 L20/4 14
 
 ## Création d'un graphe :
     - À partir d'un fichier .txt situé dans le répertoire data :
