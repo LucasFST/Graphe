@@ -8,19 +8,20 @@
     - Le but de ce projet était, à partir d'un graphe et à l'aide de l'algorithme de Dijkstra et du diagramme de Voronoï, de déterminer pour chaque noeud la livraison optimale, c'est-à-dire d'emprunter le chemin le moins coûteux en terme de distances et de taux kilométriques vis-à-vis des différentes librairies.
 
 ## Arborescence :
-Graphe/
-   ├─ bin/
-   │  ├─ contient l'exécutable du projet
-   ├─ data/
-   │  ├─ contient les fichiers .txt à manipuler
-   ├─ obj/
-   │  ├─ contient les fichiers objets du projet 
-   ├─ src/
-   │  ├─ graphe.cpp
-   │  ├─ graphe.h
-   │  ├─ main.cpp
-   ├─ Makefile
-   ├─ README.md
+
+ Graphe/
+    ├─ bin/
+    │  ├─ contient l'exécutable du projet
+    ├─ data/
+    │  ├─ contient les fichiers .txt à manipuler
+    ├─ obj/
+    │  ├─ contient les fichiers objets du projet 
+    ├─ src/
+    │  ├─ graphe.cpp
+    │  ├─ graphe.h
+    │  ├─ main.cpp
+    ├─ Makefile
+    ├─ README.md
 
 ## Fichiers textes : 
     - Les fichiers textes sont ceux qui stockent les graphes.
@@ -31,10 +32,10 @@ Graphe/
 
 ## Voici un exemple de fichier texte adéquat :
 
-4 3
-L1/2 2 2 6
-5 L9/3 8 15
-8 9 L20/4 14
+ 4 3
+ L1/2 2 2 6
+ 5 L9/3 8 15
+ 8 9 L20/4 14
 
 ## Création d'un graphe :
     - À partir d'un fichier .txt situé dans le répertoire data :
