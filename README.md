@@ -8,7 +8,6 @@
     - Le but de ce projet était, à partir d'un graphe et à l'aide de l'algorithme de Dijkstra et du diagramme de Voronoï, de déterminer pour chaque noeud la livraison optimale, c'est-à-dire d'emprunter le chemin le moins coûteux en terme de distances et de taux kilométriques vis-à-vis des différentes librairies.
 
 # Arborescence :
-
 Graphe/
    ├─ bin/
    │  ├─ contient l'exécutable du projet
