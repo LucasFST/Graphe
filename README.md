@@ -10,18 +10,18 @@
 ## Arborescence :
 
  Graphe/
-    ├─ bin/
-    │  ├─ contient l'exécutable du projet
-    ├─ data/
-    │  ├─ contient les fichiers .txt à manipuler
-    ├─ obj/
-    │  ├─ contient les fichiers objets du projet 
-    ├─ src/
-    │  ├─ graphe.cpp
-    │  ├─ graphe.h
-    │  ├─ main.cpp
-    ├─ Makefile
-    ├─ README.md
+ ├─ bin/
+ │  ├─ contient l'exécutable du projet
+ ├─ data/
+ │  ├─ contient les fichiers .txt à manipuler
+ ├─ obj/
+ │  ├─ contient les fichiers objets du projet 
+ ├─ src/
+ │  ├─ graphe.cpp
+ │  ├─ graphe.h
+ │  ├─ main.cpp
+ ├─ Makefile
+ ├─ README.md
 
 ## Fichiers textes : 
     - Les fichiers textes sont ceux qui stockent les graphes.
