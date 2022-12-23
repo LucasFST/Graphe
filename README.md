@@ -29,7 +29,7 @@ Graphe/
     - Si le noeud comporte un 'L' au début alors c'est une librairie, le nombre suivant le 'L' est alors son altitude et le nombre après le / représente le coût kilométrique de la livraison.
     - Attention, les noeuds du fichier texte doivent être succédés par un espace, hormis ceux en fin de ligne.
 
-Voici un exemple de fichier texte adéquat :
+## Voici un exemple de fichier texte adéquat :
 
 4 3
 L1/2 2 2 6
