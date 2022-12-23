@@ -7,23 +7,23 @@
 ## Cahier des charges :
     - Le but de ce projet était, à partir d'un graphe et à l'aide de l'algorithme de Dijkstra et du diagramme de Voronoï, de déterminer pour chaque noeud la livraison optimale, c'est-à-dire d'emprunter le chemin le moins coûteux en terme de distances et de taux kilométriques vis-à-vis des différentes librairies.
 
-## Arborescence :
+# Arborescence :
 
-GrapheLIFAPC/
-	├─ bin/
-	│  ├─ contient l'exécutable du projet
-	├─ data/
-	│  ├─ contient les fichiers .txt à manipuler
-	├─ obj/
-	│  ├─ contient les fichiers objets du projet 
-    ├─ src/
-	│  ├─ graphe.cpp
-    │  ├─ graphe.h
-    │  ├─ main.cpp
-    ├─ Makefile
-	├─ README.md
+Graphe/
+   ├─ bin/
+   │  ├─ contient l'exécutable du projet
+   ├─ data/
+   │  ├─ contient les fichiers .txt à manipuler
+   ├─ obj/
+   │  ├─ contient les fichiers objets du projet 
+   ├─ src/
+   │  ├─ graphe.cpp
+   │  ├─ graphe.h
+   │  ├─ main.cpp
+   ├─ Makefile
+   ├─ README.md
 
-## Fichiers textes : 
+# Fichiers textes : 
     - Les fichiers textes sont ceux qui stockent les graphes.
     - Sur la première ligne se trouvent les dimensions du graphe Largeur (= nombre de colonnes) et Hauteur (= nombre de lignes).
     - Puis le graphe est modélisé par les altitudes des Largeur*Hauteur sommets listés ligne par ligne du haut vers le bas et de gauche vers la droite.
