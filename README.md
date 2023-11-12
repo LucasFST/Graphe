@@ -55,4 +55,8 @@ Voici un exemple de fichier texte adéquat :
  - commande : ./bin/exe
 
 ## Suppression de l'éxécutable dans /bin et des .o dans /obj : 
- - commande : make clean 
+ - commande : make clean
+
+## Exemple de résultat :
+![image](https://github.com/LucasFST/Graphe/assets/115565231/b05ba05c-c61d-4235-a76a-81682edd4dd9)
+
